@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гамшгийн Аюулаас Хамгаалах Хичээл</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Цайвар цэнхэр саарал фон */
+        }
+        .video-responsive {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 харьцаа */
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background-color: #000;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .video-responsive iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        .lesson-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .lesson-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .emergency-kit-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.2s ease;
+        }
+        .emergency-kit-item:hover {
+            background-color: #e2e8f0;
+        }
+
+        /* --- Уулын тоглоомын CSS --- */
+        .game-area-container { /* Тоглоомын гаднах контейнер */
+            background-image: url('https://images.unsplash.com/photo-1542621334-a254cf47733d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80'); /* Уулын зураг */
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        /* Loading overlay style for Game */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 1000;
+            border-radius: 0.75rem; /* rounded-xl-тэй тохируулах */
+        }
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- Chatbot CSS --- */
+        .chat-container {
+            height: 500px; /* Чатын түүхний өндөр */
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            background-color: #ffffff;
+        }
+        .chat-message {
+            max-width: 80%;
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            word-wrap: break-word;
+        }
+        .user-message {
+            align-self: flex-end;
+            background-color: #bfdbfe; /* blue-200 */
+            color: #1e40af; /* blue-800 */
+            border-bottom-right-radius: 0.25rem;
+        }
+        .bot-message {
+            align-self: flex-start;
+            background-color: #dbeafe; /* blue-100 */
+            color: #1e3a8a; /* blue-900 */
+            border-bottom-left-radius: 0.25rem;
+        }
+        .chatbot-input-area {
+            display: flex;
+            margin-top: 1rem;
+            gap: 0.5rem;
+        }
+        .chatbot-loading-spinner {
+            border: 3px solid rgba(0, 0, 0, 0.1);
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin-left: 0.5rem;
+            align-self: center;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-shield-alt text-2xl"></i>
+                <a href="#" class="text-2xl font-bold hover:text-blue-100 transition duration-300">
+                    Гамшгийн Аюулаас Хамгаалах
+                </a>
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-2">
+                <a href="#lessons" class="px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center">
+                    <i class="fas fa-book mr-2"></i> Хичээлүүд
+                </a>
+                <a href="#game-section" class="px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center">
+                    <i class="fas fa-gamepad mr-2"></i> Тоглоом
+                </a>
+                <a href="#chatbot-section" class="px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center">
+                    <i class="fas fa-comments mr-2"></i> Чатбот
+                </a>
+                <a href="#resources" class="px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center">
+                    <i class="fas fa-link mr-2"></i> Нэмэлт Мэдээлэл
+                </a>
+                <a href="#about" class="px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center">
+                    <i class="fas fa-info-circle mr-2"></i> Бидний тухай
+                </a>
+            </nav>
+            
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg hover:bg-blue-700 focus:outline-none">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <nav id="mobile-menu" class="hidden md:hidden bg-blue-700 text-white">
+        <div class="container mx-auto px-4 py-2 flex flex-col space-y-2">
+            <a href="#lessons" class="px-4 py-3 rounded-lg hover:bg-blue-800 transition duration-300 flex items-center">
+                <i class="fas fa-book mr-3"></i> Хичээлүүд
+            </a>
+            <a href="#game-section" class="px-4 py-3 rounded-lg hover:bg-blue-800 transition duration-300 flex items-center">
+                <i class="fas fa-gamepad mr-3"></i> Тоглоом
+            </a>
+            <a href="#chatbot-section" class="px-4 py-3 rounded-lg hover:bg-blue-800 transition duration-300 flex items-center">
+                <i class="fas fa-comments mr-3"></i> Чатбот
+            </a>
+            <a href="#resources" class="px-4 py-3 rounded-lg hover:bg-blue-800 transition duration-300 flex items-center">
+                <i class="fas fa-link mr-3"></i> Нэмэлт Мэдээлэл
+            </a>
+            <a href="#about" class="px-4 py-3 rounded-lg hover:bg-blue-800 transition duration-300 flex items-center">
+                <i class="fas fa-info-circle mr-3"></i> Бидний тухай
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-8">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl shadow-xl p-8 mb-12 text-center">
+            <h1 class="text-4xl font-bold mb-4">Гамшгийн Аюулаас Хамгаалах Мэдлэг</h1>
+            <p class="text-xl mb-6">Гамшгийн аюулын үед зөв арга хэмжээ авснаар та өөрийн болон хайртай хүмүүсийнхээ амь насыг аврах боломжтой</p>
+            <a href="#lessons" class="inline-block bg-white text-blue-600 font-bold py-3 px-6 rounded-lg hover:bg-blue-100 transition duration-300">
+                <i class="fas fa-play mr-2"></i> Хичээлүүдийг үзэх
+            </a>
+        </section>
+
+        <!-- Lessons Section -->
+        <section id="lessons" class="mb-16">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Гамшгийн аюулаас хамгаалах хичээлүүд</h2>
+                <div class="w-24 h-1 bg-blue-500 mx-auto mb-6"></div>
+                <p class="text-gray-600 max-w-3xl mx-auto mb-8">Доорх хичээлүүдийг ангилалаар нь сонгон судалж, өөрийгөө болон хайртай хүмүүсээ аюулаас хамгаалах аргад суралцаарай.</p>
+                
+                <div class="flex justify-center mb-8">
+                    <div class="inline-flex rounded-md shadow-sm" role="group">
+                        <button type="button" id="grade-btn-baga" data-grade="Бага анги" class="px-6 py-2 text-sm font-medium text-blue-700 bg-blue-100 rounded-l-lg hover:bg-blue-200 focus:z-10 focus:ring-2 focus:ring-blue-700">
+                            Бага анги
+                        </button>
+                        <button type="button" id="grade-btn-dund" data-grade="Дунд анги" class="px-6 py-2 text-sm font-medium text-blue-700 bg-white hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700">
+                            Дунд анги
+                        </button>
+                        <button type="button" id="grade-btn-ahlah" data-grade="Ахлах анги" class="px-6 py-2 text-sm font-medium text-blue-700 bg-white rounded-r-lg hover:bg-gray-100 focus:z-10 focus:ring-2 focus:ring-blue-700">
+                            Ахлах анги
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lesson 1: Earthquake -->
+            <div id="earthquake-lesson" class="bg-white rounded-xl shadow-md overflow-hidden mb-10 lesson-card">
+                <div class="md:flex">
+                    <div class="md:w-1/3">
+                        <div class="h-full bg-gray-100 p-4 flex items-center justify-center">
+                            <img src="https://images.unsplash.com/photo-1517365884913-3c33884b06fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1180&q=80"
+                                  alt="Газар хөдлөлт"
+                                  class="w-full h-auto rounded-lg object-cover">
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold mr-3">
+                                Хичээл 1
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800">Газар хөдлөлтөөс хэрхэн хамгаалах вэ?</h3>
+                        </div>
+                        
+                        <div class="video-responsive mb-4" data-lesson-id="earthquake-lesson">
+                            <!-- Video will be loaded by JavaScript -->
+                            <iframe width="560" height="315" src="" title="Газар хөдлөлтийн аюулаас хамгаалах видео" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                        
+                        <p class="text-gray-700 mb-4">Газар хөдлөлт нь гэнэт тохиолддог байгалийн гамшиг юм. Үүний үед хэрхэн зөв арга хэмжээ авах нь таны амь насыг аврахад чухал үүрэгтэй.</p>
+                        
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-blue-800 mb-2 flex items-center">
+                                    <i class="fas fa-check-circle mr-2"></i> Хийх ёстой зүйлс:
+                                </h4>
+                                <ul class="list-disc list-inside text-gray-700 space-y-1 pl-4">
+                                    <li><strong>"Суу,нуугд,хүлээ"</strong> зарчмыг баримтлах</li>
+                                    <li>Цонх, гадна хананаас хол байх</li>
+                                    <li>Гадаа байвал задгай газар байх</li>                                    <li>Цахилгаан шат ашиглахгүй байх</li>
+                                </ul>
+                            </div>
+                            <div class="bg-yellow-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-yellow-800 mb-2 flex items-center">
+                                    <i class="fas fa-exclamation-triangle mr-2"></i> Анхаарах зүйлс:
+                                </h4>
+                                <ul class="list-disc list-inside text-gray-700 space-y-1 pl-4">
+                                    <li>Эхний чичиргээн зогссоны дараа нүүлгэн шилжих</li>
+                                    <li>Яаралтай тусламжийн цүнх бэлдэх</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+                                <i class="fas fa-tasks mr-2 text-blue-500"></i> Дасгал даалгавар
+                            </h4>
+                            <div class="space-y-3">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 mt-1">
+                                        <i class="fas fa-question-circle text-blue-500"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-gray-700">Хэрэв та гэртээ байхдаа газар хөдлөлт мэдрэвэл юу хийх вэ?</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 mt-1">
+                                        <i class="fas fa-question-circle text-blue-500"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-gray-700">Газар хөдлөлтийн үед ямар 3 үндсэн дүрмийг санах хэрэгтэй вэ?</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center">
+                                <i class="fas fa-paper-plane mr-2"></i> Хариу илгээх
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lesson 2: Flood -->
+            <div id="flood-lesson" class="bg-white rounded-xl shadow-md overflow-hidden mb-10 lesson-card">
+                <div class="md:flex">
+                    <div class="md:w-1/3">
+                        <div class="h-full bg-gray-100 p-4 flex items-center justify-center">
+                            <img src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80"
+                                  alt="Үер"
+                                  class="w-full h-auto rounded-lg object-cover">
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold mr-3">
+                                Хичээл 2
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800">Үерээс хэрхэн хамгаалах вэ?</h3>
+                        </div>
+                        
+                        <div class="video-responsive mb-4" data-lesson-id="flood-lesson">
+                            <!-- Video will be loaded by JavaScript -->
+                            <iframe width="560" height="315" src="" title="Үерийн аюулаас хамгаалах видео" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                        
+                        <p class="text-gray-700 mb-4">Үер нь их хэмжээний хур тунадас эсвэл мөс хайлснаас үүсдэг. Урьдчилан сэргийлэх, бэлэн байх нь маш чухал.</p>
+                        
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-blue-800 mb-2 flex items-center">
+                                    <i class="fas fa-check-circle mr-2"></i> Хийх ёстой зүйлс:
+                                </h4>
+                                <ul class="list-disc list-inside text-gray-700 space-y-1 pl-4">
+                                    <li>Үерийн аюулын дохиог анхаарч сонсох</li>
+                                    <li>Өндөрлөг газар руу шилжих төлөвлөгөөтэй байх</li>
+                                    <li>Үерийн усанд орохгүй байх</li>
+                                    <li>Өндөр давхарт эсвэл дээвэр дээр гарах</li>
+                                </ul>
+                            </div>
+                            <div class="bg-yellow-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-yellow-800 mb-2 flex items-center">
+                                    <i class="fas fa-exclamation-triangle mr-2"></i> Анхаарах зүйлс:
+                                </h4>
+                                <ul class="list-disc list-inside text-gray-700 space-y-1 pl-4">
+                                    <li>Цахилгааныг салгах</li>
+                                    <li>Гамшгийн цүнх бэлдэх</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <button class="text-blue-600 font-medium hover:text-blue-800 transition duration-300 flex items-center">
+                            <i class="fas fa-book-open mr-2"></i> Дэлгэрэнгүй унших
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lesson 3: Fire -->
+            <div id="fire-lesson" class="bg-white rounded-xl shadow-md overflow-hidden mb-10 lesson-card">
+                <div class="md:flex">
+                    <div class="md:w-1/3">
+                        <div class="h-full bg-gray-100 p-4 flex items-center justify-center">
+                            <img src="https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80"
+                                  alt="Гал түймэр"
+                                  class="w-full h-auto rounded-lg object-cover">
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold mr-3">
+                                Хичээл 3
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800">Гал түймрээс хэрхэн хамгаалах вэ?</h3>
+                        </div>
+                        
+                        <div class="video-responsive mb-4" data-lesson-id="fire-lesson">
+                            <!-- Video will be loaded by JavaScript -->
+                            <iframe width="560" height="315" src="" title="Галын аюулаас урьдчилан сэргийлэх" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                        
+                        <p class="text-gray-700 mb-4">Гал түймэр нь хүний амь нас, эд хөрөнгөнд асар их хохирол учруулдаг. Урьдчилан сэргийлэх, гарч болзошгүй аюулаас хамгаалах мэдлэгтэй байх нь чухал.</p>
+                        
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-blue-800 mb-2 flex items-center">
+                                    <i class="fas fa-check-circle mr-2"></i> Хийх ёстой зүйлс:
+                                </h4>
+                                <ul class="list-disc list-inside text-gray-700 space-y-1 pl-4">
+                                    <li>Утааны дохиолол тавьж, байнга шалгах</li>
+                                    <li>Галын аюулгүй байдлын төлөвлөгөөтэй байх</li>
+                                    <li>Гал гарсан үед шууд галын хорыг ашиглах</li>
+                                    <li>Түймэр гарсан байшинд эргэж орохгүй байх</li>
+                                </ul>
+                            </div>
+                            <div class="bg-yellow-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-yellow-800 mb-2 flex items-center">
+                                    <i class="fas fa-exclamation-triangle mr-2"></i> Анхаарах зүйлс:
+                                </h4>
+                                <ul class="list-disc list-inside text-gray-700 space-y-1 pl-4">
+                                    <li>Бага насны хүүхдүүдэд галын аюулын талаар заавар өгөх</li>
+                                    <li>Электроникийн хэрэгслийг зөв ашиглах</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <button class="text-blue-600 font-medium hover:text-blue-800 transition duration-300 flex items-center">
+                            <i class="fas fa-book-open mr-2"></i> Дэлгэрэнгүй унших
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lesson 4: Blizzard -->
+            <div id="blizzard-lesson" class="bg-white rounded-xl shadow-md overflow-hidden mb-10 lesson-card">
+                <div class="md:flex">
+                    <div class="md:w-1/3">
+                        <div class="h-full bg-gray-100 p-4 flex items-center justify-center">
+                            <img src="https://images.unsplash.com/photo-1483728642387-6c3bdd6c93e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1176&q=80"
+                                  alt="Цасан шуурга"
+                                  class="w-full h-auto rounded-lg object-cover">
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold mr-3">
+                                Хичээл 4
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800">Цасан шуурганаас хэрхэн хамгаалах вэ?</h3>
+                        </div>
+                        
+                        <div class="video-responsive mb-4" data-lesson-id="blizzard-lesson">
+                            <!-- Video will be loaded by JavaScript -->
+                            <iframe width="560" height="315" src="" title="Цасан шуурганы аюулаас хамгаалах видео" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                        
+                        <p class="text-gray-700 mb-4">Цасан шуурга нь хүйтэн жавар, их хэмжээний цас, салхи шуурганаас үүсдэг. Өвлийн улиралд болзошгүй аюулаас урьдчилан сэргийлэх нь чухал.</p>
+                        
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-blue-800 mb-2 flex items-center">
+                                    <i class="fas fa-check-circle mr-2"></i> Хийх ёстой зүйлс:
+                                </h4>
+                                <ul class="list-disc list-inside text-gray-700 space-y-1 pl-4">
+                                    <li>Цаг агаарын мэдээг тогтмол сонсох</li>
+                                    <li>Гэртээ дулаан байлгах, нэмэлт хувцас бэлдэх</li>
+                                    <li>Машиндаа үлдэж, тусламж хүлээнэ</li>
+                                    <li>Хоол хүнс, усны нөөцтэй байх</li>
+                                </ul>
+                            </div>
+                            <div class="bg-yellow-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-yellow-800 mb-2 flex items-center">
+                                    <i class="fas fa-exclamation-triangle mr-2"></i> Анхаарах зүйлс:
+                                </h4>
+                                <ul class="list-disc list-inside text-gray-700 space-y-1 pl-4">
+                                    <li>Цахилгаан тасарсан үед лаа, асаагуур бэлдэх</li>
+                                    <li>Хүйтэнд хөлдөхөөс сэргийлэх</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <button class="text-blue-600 font-medium hover:text-blue-800 transition duration-300 flex items-center">
+                            <i class="fas fa-book-open mr-2"></i> Дэлгэрэнгүй унших
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lesson 5: Emergency Kit -->
+            <div id="emergency-kit-lesson" class="bg-white rounded-xl shadow-md overflow-hidden mb-10 lesson-card">
+                <div class="md:flex">
+                    <div class="md:w-1/3">
+                        <div class="h-full bg-gray-100 p-4 flex items-center justify-center">
+                            <img src="https://images.unsplash.com/photo-1573497491765-dccce02b29df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
+                                  alt="Яаралтай тусламжийн цүнх"
+                                  class="w-full h-auto rounded-lg object-cover">
+                        </div>
+                    </div>
+                    <div class="md:w-2/3 p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold mr-3">
+                                Хичээл 5
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-800">Яаралтай тусламжийн цүнхэнд юу байх ёстой вэ?</h3>
+                        </div>
+                        
+                        <div class="video-responsive mb-4" data-lesson-id="emergency-kit-lesson">
+                            <!-- Video will be loaded by JavaScript -->
+                            <iframe width="560" height="315" src="" title="Яаралтай тусламжийн цүнхний талаарх видео" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                        
+                        <p class="text-gray-700 mb-4">Гамшгийн үед гэнэт нүүлгэн шилжих эсвэл гэртээ гацахад бэлэн байхын тулд яаралтай тусламжийн цүнхийг бэлтгэх нь чухал.</p>
+                        
+                        <div class="grid md:grid-cols-2 gap-4 mb-4">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-blue-800 mb-2 flex items-center">
+                                    <i class="fas fa-suitcase mr-2"></i> Үндсэн зүйлс:
+                                </h4>
+                                <ul class="text-gray-700 space-y-2">
+                                    <li class="emergency-kit-item">
+                                        <i class="fas fa-tint text-blue-500"></i> Ус (3 хоногийн хэрэглээ)
+                                    </li>
+                                    <li class="emergency-kit-item">
+                                        <i class="fas fa-utensils text-blue-500"></i> Хадгалалт сайтай хоол хүнс
+                                    </li>
+                                    <li class="emergency-kit-item">
+                                        <i class="fas fa-first-aid text-blue-500"></i> Анхны тусламжийн хэрэгсэл
+                                    </li>
+                                    <li class="emergency-kit-item">
+                                        <i class="fas fa-lightbulb text-blue-500"></i> Гэрэл, батерей
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h4 class="font-semibold text-blue-800 mb-2 flex items-center">
+                                    <i class="fas fa-plus-circle mr-2"></i> Нэмэлт зүйлс:
+                                </h4>
+                                <ul class="text-gray-700 space-y-2">
+                                    <li class="emergency-kit-item">
+                                        <i class="fas fa-tshirt text-blue-500"></i> Хувцас, хөнжил
+                                    </li>
+                                    <li class="emergency-kit-item">
+                                        <i class="fas fa-file-alt text-blue-500"></i> Бичиг баримтын хуулбар
+                                    </li>
+                                    <li class="emergency-kit-item">
+                                        <i class="fas fa-baby text-blue-500"></i> Хүүхдийн тэжээл, тоглоом
+                                    </li>
+                                    <li class="emergency-kit-item">
+                                        <i class="fas fa-paw text-blue-500"></i> Амьтны эм
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-yellow-50 p-4 rounded-lg mb-4">
+                            <h4 class="font-semibold text-yellow-800 mb-2 flex items-center">
+                                <i class="fas fa-exclamation-triangle mr-2"></i> Анхаарах зүйлс:
+                            </h4>
+                            <ul class="list-disc list-inside text-gray-700 space-y-1 pl-4">
+                                <li>Цүнхээ амархан олдог газар хадгалах</li>
+                                <li>Жилд дор хаяж нэг удаа цүнхнийхээ доторх зүйлсийг шалгах</li>
+                            </ul>
+                        </div>
+                        
+                        <button class="text-blue-600 font-medium hover:text-blue-800 transition duration-300 flex items-center">
+                            <i class="fas fa-book-open mr-2"></i> Дэлгэрэнгүй унших
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Game Section (Одоо тоглоом шууд энд байна!) -->
+        <section id="game-section" class="flex flex-col items-center justify-center bg-gradient-to-r from-blue-100 to-blue-200 rounded-xl shadow-xl p-8 mb-16 border-2 border-blue-300">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-blue-800 mb-4">Мэдлэгээ шалгах тоглоом</h2>
+                <div class="w-24 h-1 bg-blue-500 mx-auto mb-6"></div>
+                <p class="text-gray-700 mb-6 max-w-3xl mx-auto">Гамшгийн аюулаас хамгаалах хичээлүүдээ үзэж дууссан бол, одоо мэдлэгээ сорих цаг боллоо! Доорх тоглоомыг ажиллуулж, асуултуудад хариулах замаар уулын оргил өөд авиран, мэдлэгээ бататгаарай.</p>
+            </div>
+            
+            <!-- Тоглоомын үндсэн контейнер -->
+            <div id="game-area-container" class="game-area-container bg-white rounded-xl shadow-2xl p-6 w-full max-w-2xl mx-auto border-4 border-blue-500 flex flex-col items-center">
+                <h3 class="text-3xl md:text-4xl font-bold text-blue-700 mb-4 text-center">Уулын оргил өөд авирах тоглоом</h3>
+                <p class="text-gray-700 mb-6 text-center">Гамшгийн аюулаас хамгаалах мэдлэгээ шалгаж, оргилд хүр!</p>
+
+                <div class="w-full bg-gray-200 rounded-full h-4 mb-4">
+                    <div id="altitude-bar" class="bg-red-500 h-4 rounded-full transition-all duration-500" style="width: 0%;"></div>
+                </div>
+                <p class="text-lg font-semibold text-gray-800 mb-6">Одоогийн өндөр: <span id="current-altitude">0</span> м / <span id="summit-altitude">100</span> м</p>
+
+                <div id="game-content" class="w-full">
+                    <!-- Анги, Бүлэг оруулах хэсэг -->
+                    <div id="player-info-form" class="mb-4 p-4 bg-gray-50 rounded-lg shadow-inner">
+                        <label for="student-class" class="block text-gray-700 text-sm font-bold mb-2">Анги:</label>
+                        <input type="text" id="student-class" placeholder="Жишээ нь: 5Б" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4">
+                        
+                        <label for="student-group" class="block text-gray-700 text-sm font-bold mb-2">Бүлэг (Нэр/Код):</label>
+                        <input type="text" id="student-group" placeholder="Жишээ нь: Сармагчин баг / B2" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+
+                    <div id="question-display" class="bg-blue-100 p-4 rounded-lg shadow-inner mb-4 hidden">
+                        <p id="question-text" class="text-xl font-medium text-gray-900 mb-3 text-center"></p>
+                        <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <!-- Сонголтууд энд ачаална -->
+                        </div>
+                    </div>
+
+                    <div id="feedback-display" class="p-3 mt-4 rounded-lg text-center font-medium hidden"></div>
+                    <div id="save-status-display" class="p-3 mt-4 rounded-lg text-center font-medium hidden"></div>
+
+
+                    <button id="start-button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-300 transform hover:scale-105 w-full mt-6">Тоглоом эхлүүлэх</button>
+                </div>
+
+                <!-- Loading Overlay -->
+                <div id="loading-overlay" class="loading-overlay hidden rounded-xl">
+                    <div class="loading-spinner"></div>
+                    <p class="mt-4 text-gray-700">Ачаалж байна...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Chatbot Section (Шинээр нэмэгдсэн) -->
+        <section id="chatbot-section" class="bg-gradient-to-r from-green-100 to-green-200 rounded-xl shadow-xl p-8 mb-16 border-2 border-green-300">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-green-800 mb-4">Асуулт Хариултын Чатбот</h2>
+                <div class="w-24 h-1 bg-green-500 mx-auto mb-6"></div>
+                <p class="text-gray-700 max-w-3xl mx-auto">Гамшгийн аюулаас хамгаалахтай холбоотой ямар ч асуулт байвал манай чатботаас асуугаарай. Бид танд туслахад бэлэн байна!</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 max-w-2xl mx-auto flex flex-col h-96">
+                <div id="chat-history" class="chat-container flex-grow mb-4">
+                    <div class="bot-message chat-message">
+                        Сайн байна уу! Гамшгийн аюулаас хамгаалах талаар юу мэдэхийг хүсэж байна вэ?
+                    </div>
+                </div>
+                <div class="chatbot-input-area">
+                    <input type="text" id="user-input" placeholder="Асуултаа энд бичнэ үү..." class="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <button id="send-button" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 flex items-center justify-center">
+                        <i class="fas fa-paper-plane mr-2"></i> Илгээх
+                    </button>
+                </div>
+                <div id="chatbot-loading-indicator" class="mt-2 text-center text-gray-600 flex items-center justify-center hidden">
+                    <div class="chatbot-loading-spinner mr-2"></div>
+                    Хариулж байна...
+                </div>
+            </div>
+        </section>
+
+        <!-- Resources Section -->
+        <section id="resources" class="bg-white rounded-xl shadow-xl p-8 mb-16">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Нэмэлт Мэдээлэл ба Холбоосууд</h2>
+                <div class="w-24 h-1 bg-blue-500 mx-auto mb-6"></div>
+            </div>
+            <ul class="list-disc list-inside text-gray-700 space-y-4">
+                <li><a href="https://nema.gov.mn/" target="_blank" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-globe mr-2"></i> Онцгой байдлын ерөнхий газар (ОБЕГ) - Албан ёсны мэдээлэл, зөвлөмж.</a></li>
+                <li><a href="#" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-file-pdf mr-2"></i> Гамшгаас хамгаалах гарын авлага (PDF) - (Хийсвэр холбоос, та өөрийн гарын авлагаа холбоно уу)</a></li>
+                <li><a href="#" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-phone mr-2"></i> Яаралтай тусламжийн утасны жагсаалт - (Хийсвэр холбоос, та бодит дугааруудыг нэмнэ үү)</a></li>
+                <li><a href="#" class="text-blue-600 hover:underline flex items-center"><i class="fas fa-video mr-2"></i> Видео хичээлүүд (Youtube Playlist) - (Хийсвэр холбоос, та өөрийн видео хичээлүүдийг холбоно уу)</a></li>
+            </ul>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="bg-white rounded-xl shadow-xl p-8 mb-8">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Бидний тухай</h2>
+                <div class="w-24 h-1 bg-blue-500 mx-auto mb-6"></div>
+            </div>
+            <p class="text-gray-700 leading-relaxed text-center max-w-3xl mx-auto">Энэхүү вэбсайтыг гамшгийн аюулаас хамгаалах мэдлэгийг олон нийтэд хүргэх зорилгоор бүтээсэн. Бидний зорилго бол хүн бүрийг болзошгүй аюулаас урьдчилан сэргийлэх, өөрийгөө болон бусдыг хамгаалах мэдлэг, чадвартай болгох явдал юм. Хэрэв танд санал, хүсэлт байвал бидэнтэй холбогдоно уу.</p>
+            <div class="flex justify-center mt-6">
+                <a href="mailto:info@example.com" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 flex items-center">
+                    <i class="fas fa-envelope mr-2"></i> Холбоо барих
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white p-6 text-center mt-auto rounded-t-xl shadow-inner">
+        <p>&copy; 2025 Гамшгийн Аюулаас Хамгаалах Мэдлэг. Бүх эрх хуулиар хамгаалагдсан.</p>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+
+        // Global variables provided by Canvas environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let db;
+        let auth;
+        let currentUserId = null;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Initialize Firebase
+            if (Object.keys(firebaseConfig).length > 0) {
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                // Sign in anonymously or with custom token
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        currentUserId = user.uid;
+                        console.log("Firebase authenticated. User ID:", currentUserId);
+                    } else {
+                        console.log("Firebase authentication state changed: No user.");
+                        // Attempt anonymous sign-in if no user is found
+                        signInAnonymously(auth).then((userCredential) => {
+                            currentUserId = userCredential.user.uid;
+                            console.log("Signed in anonymously. User ID:", currentUserId);
+                        }).catch((error) => {
+                            console.error("Anonymous sign-in failed:", error);
+                        });
+                    }
+                });
+
+                // Use custom token if available (for Canvas environment)
+                if (initialAuthToken) {
+                    try {
+                        await signInWithCustomToken(auth, initialAuthToken);
+                        console.log("Signed in with custom token.");
+                    } catch (error) {
+                        console.error("Custom token sign-in failed:", error);
+                        // Fallback to anonymous if custom token fails
+                        signInAnonymously(auth).then((userCredential) => {
+                            currentUserId = userCredential.user.uid;
+                            console.log("Signed in anonymously as fallback. User ID:", currentUserId);
+                        }).catch((errorAnon) => {
+                            console.error("Fallback anonymous sign-in failed:", errorAnon);
+                        });
+                    }
+                } else {
+                     // If no initialAuthToken, try anonymous sign-in
+                    signInAnonymously(auth).then((userCredential) => {
+                        currentUserId = userCredential.user.uid;
+                        console.log("Signed in anonymously. User ID:", currentUserId);
+                    }).catch((error) => {
+                        console.error("Anonymous sign-in failed:", error);
+                    });
+                }
+            } else {
+                console.warn("Firebase config not found. Firestore data saving will not work.");
+            }
+        });
+
+        // --- Mobile Menu Script ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        const mobileMenuItems = mobileMenu.querySelectorAll('a');
+        mobileMenuItems.forEach(item => {
+            item.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // --- Video Lesson Management Script ---
+        const videoLessons = {
+            'earthquake-lesson': {
+                'Бага анги': 'https://www.youtube.com/embed/SjV-V3jIe3o', // Child safety from earthquake
+                'Дунд анги': 'https://www.youtube.com/embed/PrVOj-1goqs', // Earthquake Preparedness Middle School
+                'Ахлах анги': 'https://www.youtube.com/embed/l4F0VTUcbbE' // Existing example
+            },
+            'flood-lesson': {
+                'Бага анги': 'https://www.youtube.com/embed/trGVxwT9n3k', // Flood safety for kids
+                'Дунд анги': 'https://www.youtube.com/embed/CCpQdz3g_gs', // Flood preparedness middle school
+                'Ахлах анги': 'https://www.youtube.com/embed/oZk37uORL1o' // Existing example
+            },
+            'fire-lesson': {
+                'Бага анги': 'https://www.youtube.com/embed/eV8VTi_7Ha0', // Fire safety for kids
+                'Дунд анги': 'https://www.youtube.com/embed/UeRIm6nnAgg', // Fire safety middle school
+                'Ахлах анги': 'https://www.youtube.com/embed/WjNKweQLF-E' // Existing example
+            },
+            'blizzard-lesson': {
+                'Бага анги': 'https://www.youtube.com/embed/xj2SPYpg6o4', // Blizzard safety kids
+                'Дунд анги': 'https://www.youtube.com/embed/videoseries?list=PLg4dYJ00pYtK0J8eX1B1Y5_k4Q-0J4Y2', // Placeholder: Blizzard safety middle school
+                'Ахлах анги': 'https://www.youtube.com/embed/Qz7MU9qHKSE' // Existing example
+            },
+            'emergency-kit-lesson': {
+                'Бага анги': 'https://www.youtube.com/embed/videoseries?list=PLg4dYJ00pYtK0J8eX1B1Y5_k4Q-0J4Y2', // Placeholder: Emergency kit for kids
+                'Дунд анги': 'https://www.youtube.com/embed/videoseries?list=PLg4dYJ00pYtK0J8eX1B1Y5_k4Q-0J4Y2', // Placeholder: Emergency kit middle school
+                'Ахлах анги': 'https://www.youtube.com/embed/pc7xSYAShPs' // Existing example
+            }
+        };
+
+        let currentActiveGrade = 'Ахлах анги'; // Default to Akhlah angi
+
+        function updateLessonVideos(grade) {
+            currentActiveGrade = grade;
+
+            // Update button active state
+            document.querySelectorAll('[data-grade]').forEach(button => {
+                if (button.dataset.grade === grade) {
+                    button.classList.remove('bg-white', 'hover:bg-gray-100');
+                    button.classList.add('bg-blue-100', 'hover:bg-blue-200');
+                } else {
+                    button.classList.remove('bg-blue-100', 'hover:bg-blue-200');
+                    button.classList.add('bg-white', 'hover:bg-gray-100');
+                }
+            });
+
+            // Update videos for each lesson
+            document.querySelectorAll('.video-responsive').forEach(videoContainer => {
+                const iframe = videoContainer.querySelector('iframe');
+                const lessonId = videoContainer.dataset.lessonId;
+                if (iframe && lessonId && videoLessons[lessonId] && videoLessons[lessonId][grade]) {
+                    iframe.src = videoLessons[lessonId][grade];
+                }
+            });
+        }
+
+        // Add event listeners to grade buttons
+        document.getElementById('grade-btn-baga').addEventListener('click', () => updateLessonVideos('Бага анги'));
+        document.getElementById('grade-btn-dund').addEventListener('click', () => updateLessonVideos('Дунд анги'));
+        document.getElementById('grade-btn-ahlah').addEventListener('click', () => updateLessonVideos('Ахлах анги'));
+
+        // Initial load of videos based on default grade
+        document.addEventListener('DOMContentLoaded', () => {
+            updateLessonVideos(currentActiveGrade);
+        });
+
+
+        // --- Mountain Climb Game JavaScript Script ---
+        const questions = [
+            {
+                "question": "Газар хөдлөлтийн үед юу хийх ёстой вэ?",
+                "options": {
+                    "А": "Гэрийнхээ гадаа гүйж гарах",
+                    "Б": "Ширээ эсвэл бат бөх тавилганы доор орох",
+                    "В": "Цонхны дэргэд зогсох",
+                    "Г": "Цахилгаан шатаар доошоо буух"
+                },
+                "answer": "Б",
+                "explanation": "Газар хөдлөлтийн үед ширээ эсвэл бат бөх тавилганы доор орж, толгой, хүзүүгээ хамгаалах нь хамгийн аюулгүй юм."
+            },
+            {
+                "question": "Гэнэтийн үерээс хэрхэн хамгаалах вэ?",
+                "options": {
+                    "А": "Үерийн усанд орох",
+                    "Б": "Өндөрлөг газар руу нүүлгэн шилжих",
+                    "В": "Машинаар зугтах",
+                    "Г": "Гэртээ үлдэж үерийг хүлээх"
+                },
+                "answer": "Б",
+                "explanation": "Үерлэж эхлэх үед хамгийн түрүүнд хийх зүйл бол өндөрлөг, аюулгүй газар руу нүүлгэн шилжих явдал юм."
+            },
+            {
+                "question": "Гал түймэр гарах үед хамгийн эхний хийх алхам юу вэ?",
+                "options": {
+                    "А": "Утсаар видео хийх",
+                    "Б": "Гал сөнөөгч дуудах",
+                    "В": "Галын хорыг олох",
+                    "Г": "Өөрийгөө хамгаалаад гарах гарцаа олох"
+                },
+                "answer": "Г",
+                "explanation": "Гал түймэр гарах үед хамгийн чухал нь амиа аврах юм. Өөрийгөө хамгаалаад хамгийн ойрын гарцаар гарч, аюулгүй газар очих хэрэгтэй."
+            },
+            {
+                "question": "Цасан шуурганы үед автомашиндаа гацвал юу хийх ёстой вэ?",
+                "options": {
+                    "А": "Гадаа гарч тусламж эрж хайх",
+                    "Б": "Машины хөдөлгүүрийг байнга асаалттай байлгах",
+                    "В": "Машиндаа үлдэж, тусламж хүлээн, дулаан байлгах",
+                    "Г": "Зугтахыг оролдох"
+                },
+                "answer": "В",
+                "explanation": "Цасан шуурганд гацсан үед машинаа орхиж явах нь аюултай. Машиндаа үлдэж, дулаан байлгахыг хичээж, тусламж дуудах эсвэл хүлээх хэрэгтэй."
+            },
+            {
+                "question": "Гамшгийн үед яаралтай тусламжийн цүнхэнд юу зайлшгүй байх ёстой вэ?",
+                "options": {
+                    "А": "Чихэр, ундаа",
+                    "Б": "Ус, эм тариа, анхны тусламжийн хэрэгсэл",
+                    "В": "Сошиал медиа хийх утас",
+                    "Г": "Тоглоом, ном"
+                },
+                "answer": "Б",
+                "explanation": "Гамшгийн үед ус, эм тариа, анхны тусламжийн хэрэгсэл зэрэг амьдралд зайлшгүй шаардлагатай зүйлсийг бэлэн байлгах нь чухал."
+            },
+            {
+                "question": "Хүчтэй салхи шуурганы үед гэртээ байвал ямар арга хэмжээ авах вэ?",
+                "options": {
+                    "А": "Цонхны ойролцоо зогсож гаднаа юу болж байгааг харах",
+                    "Б": "Цонх, хаалгыг бэхлэх, аюулгүй өрөөнд орох",
+                    "В": "Машинаар гадагш гарахыг оролдох",
+                    "Г": "Цахилгаан хэрэгслээ ажиллуулж байх"
+                },
+                "answer": "Б",
+                "explanation": "Хүчтэй салхи шуурганы үед цонх, хаалгыг бэхэлж, аюулгүй, цонхгүй өрөөнд байрлах нь зүйтэй."
+            }
+        ];
+
+        // Тоглоомын тохиргоо
+        const SUMMIT_ALTITUDE = 100;
+        const ALTITUDE_GAIN_PER_CORRECT_ANSWER = 20;
+        const ALTITUDE_PENALTY_PER_INCORRECT_ANSWER = 5;
+
+        let currentAltitude = 0;
+        let questionCount = 0;
+        let availableQuestions = [...questions]; // Асуултуудыг хуулж авах
+        let gameClass = '';
+        let gameGroup = '';
+
+        // DOM элементүүд (Тоглоомын хэсэг доторх элементүүд)
+        const currentAltitudeSpan = document.getElementById('current-altitude');
+        const summitAltitudeSpan = document.getElementById('summit-altitude');
+        const altitudeBar = document.getElementById('altitude-bar');
+        const questionDisplay = document.getElementById('question-display'); // Асуултын хэсэг
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedbackDisplay = document.getElementById('feedback-display');
+        const startButton = document.getElementById('start-button');
+        const gameLoadingOverlay = document.getElementById('loading-overlay'); // Game-ийн loading overlay
+        const gameContent = document.getElementById('game-content'); // game-area-г game-content болгосон
+        const playerInfoForm = document.getElementById('player-info-form');
+        const studentClassInput = document.getElementById('student-class');
+        const studentGroupInput = document.getElementById('student-group');
+        const saveStatusDisplay = document.getElementById('save-status-display');
+
+
+        // Эхний тохиргоо
+        summitAltitudeSpan.textContent = SUMMIT_ALTITUDE;
+        startButton.addEventListener('click', startGame);
+
+        function showGameLoading() {
+            gameLoadingOverlay.classList.remove('hidden');
+        }
+
+        function hideGameLoading() {
+            gameLoadingOverlay.classList.add('hidden');
+        }
+
+        function updateDisplay() {
+            currentAltitudeSpan.textContent = currentAltitude;
+            const progress = (currentAltitude / SUMMIT_ALTITUDE) * 100;
+            altitudeBar.style.width = `${progress}%`;
+            if (currentAltitude >= SUMMIT_ALTITUDE * 0.7) { // 70%-с дээш бол ногоон болгох
+                altitudeBar.classList.remove('bg-yellow-500', 'bg-red-500');
+                altitudeBar.classList.add('bg-green-500');
+            } else if (currentAltitude >= SUMMIT_ALTITUDE * 0.3) { // 30%-с дээш бол шар болгох
+                altitudeBar.classList.remove('bg-green-500', 'bg-red-500');
+                altitudeBar.classList.add('bg-yellow-500');
+            } else { // 30%-с доош бол улаан болгох
+                altitudeBar.classList.remove('bg-green-500', 'bg-yellow-500');
+                altitudeBar.classList.add('bg-red-500');
+            }
+        }
+
+        function displayQuestion() {
+            if (availableQuestions.length === 0) {
+                // Бүх асуултад хариулсан бол дахин холих
+                availableQuestions = [...questions];
+            }
+            const randomIndex = Math.floor(Math.random() * availableQuestions.length);
+            const currentQuestion = availableQuestions[randomIndex];
+            availableQuestions.splice(randomIndex, 1); // Асуултыг сонгосны дараа устгах
+
+            questionText.textContent = currentQuestion.question;
+            optionsContainer.innerHTML = ''; // Сонголтуудыг цэвэрлэх
+
+            for (const key in currentQuestion.options) {
+                const button = document.createElement('button');
+                button.textContent = `${key}. ${currentQuestion.options[key]}`;
+                button.classList.add('bg-blue-500', 'hover:bg-blue-600', 'text-white', 'font-medium', 'py-2', 'px-4', 'rounded-lg', 'transition', 'duration-200', 'text-left');
+                button.addEventListener('click', () => checkAnswer(key, currentQuestion.answer, currentQuestion.explanation));
+                optionsContainer.appendChild(button);
+            }
+            feedbackDisplay.classList.add('hidden'); // Санал хүсэлтийн мэдээллийг нуух
+        }
+
+        async function checkAnswer(userAnswer, correctAnswer, explanation) {
+            showGameLoading(); // Ачаалж байгааг харуулах
+            // Сонголтын товчлууруудыг идэвхгүй болгох
+            Array.from(optionsContainer.children).forEach(btn => btn.disabled = true);
+
+            if (userAnswer === correctAnswer) {
+                currentAltitude += ALTITUDE_GAIN_PER_CORRECT_ANSWER;
+                feedbackDisplay.classList.remove('bg-red-100', 'text-red-800');
+                feedbackDisplay.classList.add('bg-green-100', 'text-green-800');
+                feedbackDisplay.textContent = "Зөв хариуллаа! Та улам дээшилж байна.";
+            } else {
+                currentAltitude -= ALTITUDE_PENALTY_PER_INCORRECT_ANSWER;
+                if (currentAltitude < 0) {
+                    currentAltitude = 0;
+                }
+                feedbackDisplay.classList.remove('bg-green-100', 'text-green-800');
+                feedbackDisplay.classList.add('bg-red-100', 'text-red-800');
+                feedbackDisplay.textContent = `Буруу хариуллаа. Зөв хариулт нь: ${correctAnswer}. Тайлбар: ${explanation}`;
+            }
+            feedbackDisplay.classList.remove('hidden'); // Санал хүсэлтийг харуулах
+            updateDisplay();
+
+            setTimeout(() => {
+                if (currentAltitude >= SUMMIT_ALTITUDE) {
+                    endGame(true);
+                } else {
+                    hideGameLoading(); // Ачаалж байгааг нуух
+                    displayQuestion();
+                     // Сонголтын товчлууруудыг дахин идэвхжүүлэх
+                    Array.from(optionsContainer.children).forEach(btn => btn.disabled = false);
+                }
+            }, 2000); // 2 секунд хүлээх
+        }
+
+        async function startGame() {
+            gameClass = studentClassInput.value.trim();
+            gameGroup = studentGroupInput.value.trim();
+
+            if (!gameClass || !gameGroup) {
+                saveStatusDisplay.classList.remove('hidden', 'bg-green-100', 'text-green-800');
+                saveStatusDisplay.classList.add('bg-red-100', 'text-red-800');
+                saveStatusDisplay.textContent = "Тоглоом эхлүүлэхийн тулд анги болон бүлгийн мэдээллээ оруулна уу!";
+                return;
+            }
+
+            showGameLoading(); // Ачаалж байгааг харуулах
+            startButton.classList.add('hidden'); // Эхлүүлэх товчийг нуух
+            playerInfoForm.classList.add('hidden'); // Мэдээлэл оруулах хэсгийг нуух
+            questionDisplay.classList.remove('hidden'); // Асуултын хэсгийг харуулах
+            saveStatusDisplay.classList.add('hidden'); // Мэдээлэл хадгалах статусыг нуух
+
+            currentAltitude = 0;
+            questionCount = 0;
+            availableQuestions = [...questions]; // Тоглоом эхлэхэд асуултуудыг дахин цэнэглэх
+            updateDisplay();
+            setTimeout(() => {
+                hideGameLoading(); // Ачаалж байгааг нуух
+                displayQuestion();
+            }, 500); // Богино ачааллын хугацаа
+        }
+
+        async function endGame(isWin) {
+            clearGameDisplay();
+            let message = "";
+            let messageClass = "";
+            if (isWin) {
+                message = "🎉🎉🎉 БАЯР ХҮРГЭЕ! Та уулын оргилд гарч, тугаа өргөлөө! 🎉 🎉\nГамшгийн аюулаас хамгаалах мэдлэг тань амьдралыг аврах чухал ач холбогдолтой!";
+                messageClass = "bg-green-200 text-green-900";
+            } else {
+                message = "Тоглоом дууслаа. Дахин оролдож мэдлэгээ сайжруулаарай!";
+                messageClass = "bg-red-200 text-red-900";
+            }
+            questionText.textContent = message;
+            questionText.classList.add(messageClass);
+            questionText.classList.remove('mb-3'); // Зай арилгах
+
+            optionsContainer.innerHTML = '';
+            feedbackDisplay.classList.add('hidden');
+
+            startButton.textContent = "Дахин тоглох";
+            startButton.classList.remove('hidden'); // Тоглоомыг дахин эхлүүлэх товчийг харуулах
+            playerInfoForm.classList.remove('hidden'); // Мэдээлэл оруулах хэсгийг дахин харуулах
+
+            hideGameLoading(); // Ачаалж байгааг нуух
+
+            // Save game result to Firestore
+            await saveGameResult(isWin, currentAltitude, gameClass, gameGroup);
+        }
+
+        async function saveGameResult(isWin, finalAltitude, studentClass, studentGroup) {
+            if (!db || !currentUserId) {
+                console.error("Firestore not initialized or user not authenticated. Cannot save data.");
+                saveStatusDisplay.classList.remove('hidden', 'bg-green-100', 'text-green-800');
+                saveStatusDisplay.classList.add('bg-red-100', 'text-red-800');
+                saveStatusDisplay.textContent = "Үр дүнг хадгалах боломжгүй. Интернэт холболтоо шалгаад дахин оролдоно уу.";
+                return;
+            }
+
+            saveStatusDisplay.classList.remove('hidden', 'bg-red-100', 'text-red-800');
+            saveStatusDisplay.classList.add('bg-blue-100', 'text-blue-800');
+            saveStatusDisplay.textContent = "Үр дүнг хадгалж байна...";
+
+            try {
+                const docRef = await addDoc(collection(db, `artifacts/${appId}/public/data/game_scores`), {
+                    userId: currentUserId,
+                    class: studentClass,
+                    group: studentGroup,
+                    finalAltitude: finalAltitude,
+                    isWin: isWin,
+                    timestamp: new Date()
+                });
+                console.log("Document written with ID: ", docRef.id);
+                saveStatusDisplay.classList.remove('bg-blue-100', 'text-blue-800');
+                saveStatusDisplay.classList.add('bg-green-100', 'text-green-800');
+                saveStatusDisplay.textContent = "Таны үр дүн амжилттай хадгалагдлаа!";
+                studentClassInput.value = ''; // Input-г цэвэрлэх
+                studentGroupInput.value = ''; // Input-г цэвэрлэх
+            } catch (e) {
+                console.error("Error adding document: ", e);
+                saveStatusDisplay.classList.remove('bg-blue-100', 'text-blue-800');
+                saveStatusDisplay.classList.add('bg-red-100', 'text-red-800');
+                saveStatusDisplay.textContent = "Үр дүнг хадгалахад алдаа гарлаа. Дахин оролдоно уу.";
+            } finally {
+                setTimeout(() => {
+                    saveStatusDisplay.classList.add('hidden'); // 3 секундын дараа статусыг нуух
+                }, 3000);
+            }
+        }
+
+        function clearGameDisplay() {
+            questionText.classList.remove('bg-green-200', 'text-green-900', 'bg-red-200', 'text-red-900');
+        }
+
+        // Тоглоом эхлэхээс өмнө тоглоомын хэсгийг нуух
+        document.addEventListener('DOMContentLoaded', () => {
+            questionDisplay.classList.add('hidden'); // Асуултын хэсгийг анхнаасаа нуух
+            hideGameLoading();
+        });
+
+        // --- Chatbot Script ---
+        const chatHistoryDiv = document.getElementById('chat-history');
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+        const chatbotLoadingIndicator = document.getElementById('chatbot-loading-indicator');
+
+        const API_KEY = ""; // Canvas will provide this at runtime
+        const MODEL_NAME = "gemini-2.5-flash-preview-05-20";
+
+        async function fetchGeminiResponse(prompt, retries = 3, delay = 1000) {
+            let chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+            const payload = { contents: chatHistory };
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${API_KEY}`;
+
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        if (response.status === 429 && i < retries - 1) { // Too Many Requests
+                            await new Promise(res => setTimeout(res, delay));
+                            delay *= 2; // Exponential backoff
+                            continue;
+                        }
+                        throw new Error(`API request failed with status ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        return result.candidates[0].content.parts[0].text;
+                    } else {
+                        throw new Error("Unexpected API response structure or missing content.");
+                    }
+                } catch (error) {
+                    console.error("Error fetching from Gemini API:", error);
+                    if (i === retries - 1) throw error; // Re-throw after last retry
+                }
+            }
+            return "Уучлаарай, хариулт өгөхөд алдаа гарлаа. Дахин оролдоно уу.";
+        }
+
+        function appendMessage(sender, text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('chat-message');
+            if (sender === 'user') {
+                messageDiv.classList.add('user-message');
+            } else {
+                messageDiv.classList.add('bot-message');
+            }
+            messageDiv.textContent = text;
+            chatHistoryDiv.appendChild(messageDiv);
+            chatHistoryDiv.scrollTop = chatHistoryDiv.scrollHeight; // Хамгийн доод тал руу гүйлгэх
+        }
+
+        async function sendMessage() {
+            const userQuestion = userInput.value.trim();
+            if (userQuestion === '') return;
+
+            appendMessage('user', userQuestion);
+            userInput.value = '';
+            showChatbotLoading();
+
+            try {
+                const botResponse = await fetchGeminiResponse(userQuestion);
+                appendMessage('bot', botResponse);
+            } catch (error) {
+                appendMessage('bot', "Уучлаарай, хариулт өгөхөд алдаа гарлаа. Дахин оролдоно уу.");
+            } finally {
+                hideChatbotLoading();
+            }
+        }
+
+        sendButton.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        function showChatbotLoading() {
+            chatbotLoadingIndicator.classList.remove('hidden');
+            sendButton.disabled = true;
+            userInput.disabled = true;
+        }
+
+        function hideChatbotLoading() {
+            chatbotLoadingIndicator.classList.add('hidden');
+            sendButton.disabled = false;
+            userInput.disabled = false;
+            userInput.focus(); // Input-т курсорыг буцаах
+        }
+    </script>
+</body>
+</html>
