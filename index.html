@@ -197,7 +197,7 @@
         <!-- Hero Section -->
         <section class="bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-xl shadow-xl p-8 mb-12 text-center">
             <h1 class="text-4xl font-bold mb-4">Гамшгийн Аюулаас Хамгаалах Мэдлэг</h1>
-            <p class="text-xl mb-6">Гамшгийн аюулын үед зөв арга хэмжээ авснаар та өөрийн болон хайртай хүмүүсийнхээ амь насыг аврах боломжтой</p>
+            <p class="text-xl mb-6">Гамшгийн аюулын үед зөв арга хэмжээ авснаар та өөририйн болон хайртай хүмүүсийнхээ амь насыг аврах боломжтой</p>
             <a href="#lessons" class="inline-block bg-white text-blue-600 font-bold py-3 px-6 rounded-lg hover:bg-blue-100 transition duration-300">
                 <i class="fas fa-play mr-2"></i> Хичээлүүдийг үзэх
             </a>
@@ -258,7 +258,8 @@
                                 <ul class="list-disc list-inside text-gray-700 space-y-1 pl-4">
                                     <li><strong>"Суу,нуугд,хүлээ"</strong> зарчмыг баримтлах</li>
                                     <li>Цонх, гадна хананаас хол байх</li>
-                                    <li>Гадаа байвал задгай газар байх</li>                                    <li>Цахилгаан шат ашиглахгүй байх</li>
+                                    <li>Гадаа байвал задгай газар байх</li>                                    
+                                    <li>Цахилгаан шат ашиглахгүй байх</li>
                                 </ul>
                             </div>
                             <div class="bg-yellow-50 p-4 rounded-lg">
@@ -276,7 +277,7 @@
                             <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
                                 <i class="fas fa-tasks mr-2 text-blue-500"></i> Дасгал даалгавар
                             </h4>
-                            <div class="space-y-3">
+                            <div class="space-y-3 mb-4">
                                 <div class="flex items-start">
                                     <div class="flex-shrink-0 mt-1">
                                         <i class="fas fa-question-circle text-blue-500"></i>
@@ -294,9 +295,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <button class="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center">
-                                <i class="fas fa-paper-plane mr-2"></i> Хариу илгээх
-                            </button>
+                            <!-- New: File Upload Section -->
+                            <div class="border-t border-gray-200 pt-4 mt-4">
+                                <h5 class="font-semibold text-gray-800 mb-2 flex items-center">
+                                    <i class="fas fa-upload mr-2 text-blue-500"></i> Бие даалтын даалгавар хураалгах
+                                </h5>
+                                <p class="text-gray-700 text-sm mb-3">Өөрийн даалгаврын файлыг энд хавсаргана уу (PDF, Word, эсвэл зураг).</p>
+                                <input type="file" id="assignment-file-earthquake" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none mb-3">
+                                <button id="submit-assignment-earthquake" class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center">
+                                    <i class="fas fa-paper-plane mr-2"></i> Даалгавар хураах
+                                </button>
+                                <div id="submission-status-earthquake" class="mt-2 text-sm text-gray-700 hidden"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -345,14 +355,46 @@
                                 </h4>
                                 <ul class="list-disc list-inside text-gray-700 space-y-1 pl-4">
                                     <li>Цахилгааныг салгах</li>
-                                    <li>Гамшгийн цүнх бэлдэх</li>
+                                    <li>Гамшгийн цүнхээ ойрхон авах бэлдэх</li>
                                 </ul>
                             </div>
                         </div>
                         
-                        <button class="text-blue-600 font-medium hover:text-blue-800 transition duration-300 flex items-center">
-                            <i class="fas fa-book-open mr-2"></i> Дэлгэрэнгүй унших
-                        </button>
+                        <div class="mt-6 bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+                                <i class="fas fa-tasks mr-2 text-blue-500"></i> Дасгал даалгавар
+                            </h4>
+                            <div class="space-y-3 mb-4">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 mt-1">
+                                        <i class="fas fa-question-circle text-blue-500"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-gray-700">Үерийн үед гэрээсээ гарах боломжгүй бол юу хийх вэ?</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 mt-1">
+                                        <i class="fas fa-question-circle text-blue-500"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-gray-700">Үерийн үед цахилгааны аюулгүй байдлыг хэрхэн хангах вэ?</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- New: File Upload Section -->
+                            <div class="border-t border-gray-200 pt-4 mt-4">
+                                <h5 class="font-semibold text-gray-800 mb-2 flex items-center">
+                                    <i class="fas fa-upload mr-2 text-blue-500"></i> Бие даалтын даалгавар хураалгах
+                                </h5>
+                                <p class="text-gray-700 text-sm mb-3">Өөрийн даалгаврын файлыг энд хавсаргана уу (PDF, Word, эсвэл зураг).</p>
+                                <input type="file" id="assignment-file-flood" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none mb-3">
+                                <button id="submit-assignment-flood" class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center">
+                                    <i class="fas fa-paper-plane mr-2"></i> Даалгавар хураах
+                                </button>
+                                <div id="submission-status-flood" class="mt-2 text-sm text-gray-700 hidden"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -405,9 +447,41 @@
                             </div>
                         </div>
                         
-                        <button class="text-blue-600 font-medium hover:text-blue-800 transition duration-300 flex items-center">
-                            <i class="fas fa-book-open mr-2"></i> Дэлгэрэнгүй унших
-                        </button>
+                        <div class="mt-6 bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+                                <i class="fas fa-tasks mr-2 text-blue-500"></i> Дасгал даалгавар
+                            </h4>
+                            <div class="space-y-3 mb-4">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 mt-1">
+                                        <i class="fas fa-question-circle text-blue-500"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-gray-700">Гал гарах үед хамгийн түрүүнд авах арга хэмжээ юу вэ?</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 mt-1">
+                                        <i class="fas fa-question-circle text-blue-500"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-gray-700">Утааны дохиолол ямар үүрэгтэй вэ?</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- New: File Upload Section -->
+                            <div class="border-t border-gray-200 pt-4 mt-4">
+                                <h5 class="font-semibold text-gray-800 mb-2 flex items-center">
+                                    <i class="fas fa-upload mr-2 text-blue-500"></i> Бие даалтын даалгавар хураалгах
+                                </h5>
+                                <p class="text-gray-700 text-sm mb-3">Өөрийн даалгаврын файлыг энд хавсаргана уу (PDF, Word, эсвэл зураг).</p>
+                                <input type="file" id="assignment-file-fire" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none mb-3">
+                                <button id="submit-assignment-fire" class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center">
+                                    <i class="fas fa-paper-plane mr-2"></i> Даалгавар хураах
+                                </button>
+                                <div id="submission-status-fire" class="mt-2 text-sm text-gray-700 hidden"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -460,9 +534,41 @@
                             </div>
                         </div>
                         
-                        <button class="text-blue-600 font-medium hover:text-blue-800 transition duration-300 flex items-center">
-                            <i class="fas fa-book-open mr-2"></i> Дэлгэрэнгүй унших
-                        </button>
+                        <div class="mt-6 bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+                                <i class="fas fa-tasks mr-2 text-blue-500"></i> Дасгал даалгавар
+                            </h4>
+                            <div class="space-y-3 mb-4">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 mt-1">
+                                        <i class="fas fa-question-circle text-blue-500"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-gray-700">Цасан шуурганы үед гадаа гарах нь ямар аюултай вэ?</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 mt-1">
+                                        <i class="fas fa-question-circle text-blue-500"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-gray-700">Машинд гацсан үед дулаан байхын тулд юу хийх вэ?</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- New: File Upload Section -->
+                            <div class="border-t border-gray-200 pt-4 mt-4">
+                                <h5 class="font-semibold text-gray-800 mb-2 flex items-center">
+                                    <i class="fas fa-upload mr-2 text-blue-500"></i> Бие даалтын даалгавар хураалгах
+                                </h5>
+                                <p class="text-gray-700 text-sm mb-3">Өөрийн даалгаврын файлыг энд хавсаргана уу (PDF, Word, эсвэл зураг).</p>
+                                <input type="file" id="assignment-file-blizzard" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none mb-3">
+                                <button id="submit-assignment-blizzard" class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center">
+                                    <i class="fas fa-paper-plane mr-2"></i> Даалгавар хураах
+                                </button>
+                                <div id="submission-status-blizzard" class="mt-2 text-sm text-gray-700 hidden"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -533,19 +639,41 @@
                             </div>
                         </div>
                         
-                        <div class="bg-yellow-50 p-4 rounded-lg mb-4">
-                            <h4 class="font-semibold text-yellow-800 mb-2 flex items-center">
-                                <i class="fas fa-exclamation-triangle mr-2"></i> Анхаарах зүйлс:
+                        <div class="mt-6 bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-gray-800 mb-3 flex items-center">
+                                <i class="fas fa-tasks mr-2 text-blue-500"></i> Дасгал даалгавар
                             </h4>
-                            <ul class="list-disc list-inside text-gray-700 space-y-1 pl-4">
-                                <li>Цүнхээ амархан олдог газар хадгалах</li>
-                                <li>Жилд дор хаяж нэг удаа цүнхнийхээ доторх зүйлсийг шалгах</li>
-                            </ul>
+                            <div class="space-y-3 mb-4">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 mt-1">
+                                        <i class="fas fa-question-circle text-blue-500"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-gray-700">Яаралтай тусламжийн цүнхэнд хамгийн чухал 3 зүйл юу вэ?</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 mt-1">
+                                        <i class="fas fa-question-circle text-blue-500"></i>
+                                    </div>
+                                    <div class="ml-3">
+                                        <p class="text-gray-700">Яаралтай тусламжийн цүнхийг хаана хадгалах ёстой вэ?</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- New: File Upload Section -->
+                            <div class="border-t border-gray-200 pt-4 mt-4">
+                                <h5 class="font-semibold text-gray-800 mb-2 flex items-center">
+                                    <i class="fas fa-upload mr-2 text-blue-500"></i> Бие даалтын даалгавар хураалгах
+                                </h5>
+                                <p class="text-gray-700 text-sm mb-3">Өөрийн даалгаврын файлыг энд хавсаргана уу (PDF, Word, эсвэл зураг).</p>
+                                <input type="file" id="assignment-file-emergency-kit" class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none mb-3">
+                                <button id="submit-assignment-emergency-kit" class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-lg transition duration-300 flex items-center">
+                                    <i class="fas fa-paper-plane mr-2"></i> Даалгавар хураах
+                                </button>
+                                <div id="submission-status-emergency-kit" class="mt-2 text-sm text-gray-700 hidden"></div>
+                            </div>
                         </div>
-                        
-                        <button class="text-blue-600 font-medium hover:text-blue-800 transition duration-300 flex items-center">
-                            <i class="fas fa-book-open mr-2"></i> Дэлгэрэнгүй унших
-                        </button>
                     </div>
                 </div>
             </div>
@@ -667,6 +795,8 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+        import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js"; // Storage SDK нэмсэн!
+
 
         // Global variables provided by Canvas environment
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
@@ -675,6 +805,7 @@
 
         let db;
         let auth;
+        let storage; // Storage хувьсагч нэмсэн
         let currentUserId = null;
 
         document.addEventListener('DOMContentLoaded', async () => {
@@ -683,6 +814,7 @@
                 const app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 auth = getAuth(app);
+                storage = getStorage(app); // Storage-г эхлүүлсэн
 
                 // Sign in anonymously or with custom token
                 onAuthStateChanged(auth, (user) => {
@@ -721,13 +853,19 @@
                     signInAnonymously(auth).then((userCredential) => {
                         currentUserId = userCredential.user.uid;
                         console.log("Signed in anonymously. User ID:", currentUserId);
-                    }).catch((error) => {
-                        console.error("Anonymous sign-in failed:", error);
                     });
                 }
             } else {
                 console.warn("Firebase config not found. Firestore data saving will not work.");
             }
+
+            // Даалгавар хураах товчлууруудад event listener нэмэх
+            document.querySelectorAll('[id^="submit-assignment-"]').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const lessonId = event.target.id.replace('submit-assignment-', '');
+                    handleAssignmentSubmission(lessonId);
+                });
+            });
         });
 
         // --- Mobile Menu Script ---
@@ -748,7 +886,7 @@
         // --- Video Lesson Management Script ---
         const videoLessons = {
             'earthquake-lesson': {
-                'Бага анги': 'https://www.youtube.com/embed/SjV-V3jIe3o', // Child safety from earthquake
+                'Бага анги': 'https://www.youtube.com/embed/EFgomRAPDyM?si=9mFv-Et6WhmsfZKk', // Child safety from earthquake
                 'Дунд анги': 'https://www.youtube.com/embed/PrVOj-1goqs', // Earthquake Preparedness Middle School
                 'Ахлах анги': 'https://www.youtube.com/embed/l4F0VTUcbbE' // Existing example
             },
@@ -768,8 +906,8 @@
                 'Ахлах анги': 'https://www.youtube.com/embed/Qz7MU9qHKSE' // Existing example
             },
             'emergency-kit-lesson': {
-                'Бага анги': 'https://www.youtube.com/embed/videoseries?list=PLg4dYJ00pYtK0J8eX1B1Y5_k4Q-0J4Y2', // Placeholder: Emergency kit for kids
-                'Дунд анги': 'https://www.youtube.com/embed/videoseries?list=PLg4dYJ00pYtK0J8eX1B1Y5_k4Q-0J4Y2', // Placeholder: Emergency kit middle school
+                'Бага анги': 'https://www.youtube.com/embed/pc7xSYAShPs?si=VAWM1xM-CIDL2y8z', // Placeholder: Emergency kit for kids
+                'Дунд анги': 'https://www.youtube.com/embed/pc7xSYAShPs?si=VAWM1xM-CIDL2y8z', // Placeholder: Emergency kit middle school
                 'Ахлах анги': 'https://www.youtube.com/embed/pc7xSYAShPs' // Existing example
             }
         };
@@ -1025,7 +1163,7 @@
             let message = "";
             let messageClass = "";
             if (isWin) {
-                message = "🎉🎉🎉 БАЯР ХҮРГЭЕ! Та уулын оргилд гарч, тугаа өргөлөө! 🎉 🎉\nГамшгийн аюулаас хамгаалах мэдлэг тань амьдралыг аврах чухал ач холбогдолтой!";
+                message = "🎉🎉🎉 БАЯР ХҮРГЭЕ! Та уулын оргилд гарч, тугаа өргөлөө! 🎉🎉🎉\nГамшгийн аюулаас хамгаалах мэдлэг тань амьдралыг аврах чухал ач холбогдолтой!";
                 messageClass = "bg-green-200 text-green-900";
             } else {
                 message = "Тоглоом дууслаа. Дахин оролдож мэдлэгээ сайжруулаарай!";
@@ -1104,7 +1242,12 @@
         const sendButton = document.getElementById('send-button');
         const chatbotLoadingIndicator = document.getElementById('chatbot-loading-indicator');
 
-        const API_KEY = "AIzaSyC47JGMbEnlubYvjWG51i2q9E19yy36qwQ"; // Canvas will provide this at runtime
+        // Энд та өөрийн Gemini API түлхүүрээ оруулна уу.
+        // Хэрэв та энэ кодыг Canvas орчинд ажиллуулж байгаа бол доорх мөрийг хэвээр үлдээж болно.
+        // Харин та өөрийн компьютер дээрээ эсвэл бусад веб хостинг дээр ажиллуулж байгаа бол
+        // Google AI Studio-с авсан API түлхүүрээ "YOUR_GEMINI_API_KEY_HERE" гэсэн хэсэгт оруулна уу.
+        // Энэ нь аюулгүй байдлын үүднээс үйлдвэрлэлийн орчинд зөвлөгддөггүй болохыг анхаарна уу.
+        const API_KEY = "AIzaSyC47JGMbEnlubYvjWG51i2q9E19yy36qwQ"; // YOUR_GEMINI_API_KEY_HERE энд API түлхүүрээ оруулна уу.
         const MODEL_NAME = "gemini-2.5-flash-preview-05-20";
 
         async function fetchGeminiResponse(prompt, retries = 3, delay = 1000) {
@@ -1196,7 +1339,84 @@
             userInput.disabled = false;
             userInput.focus(); // Input-т курсорыг буцаах
         }
+
+        // --- New: Assignment Submission with Firebase Storage ---
+        // handleAssignmentSubmission функц шинэчилсэн
+        async function handleAssignmentSubmission(lessonId) {
+            const fileInput = document.getElementById(`assignment-file-${lessonId}`);
+            const submissionStatusDiv = document.getElementById(`submission-status-${lessonId}`);
+            
+            if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+                submissionStatusDiv.classList.remove('hidden', 'text-green-800');
+                submissionStatusDiv.classList.add('text-red-800');
+                submissionStatusDiv.textContent = "Файл сонгоно уу.";
+                return;
+            }
+
+            if (!db || !storage || !currentUserId) {
+                submissionStatusDiv.classList.remove('hidden', 'text-green-800');
+                submissionStatusDiv.classList.add('text-red-800');
+                submissionStatusDiv.textContent = "Үйлчилгээ бэлэн биш байна. Интернэт холболтоо шалгаад дахин оролдоно уу.";
+                console.error("Firebase services not initialized or user not authenticated.");
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const fileName = file.name;
+            const timestamp = new Date().toISOString();
+            // Файлыг хадгалах зам (path)
+            const storagePath = `assignments/${appId}/${currentUserId}/${lessonId}/${timestamp}_${fileName}`;
+            const storageRef = ref(storage, storagePath);
+            const uploadTask = uploadBytesResumable(storageRef, file);
+
+            submissionStatusDiv.classList.remove('hidden', 'text-red-800', 'text-green-800');
+            submissionStatusDiv.classList.add('text-blue-800');
+            submissionStatusDiv.textContent = `Файлыг ${file.name} илгээж байна... (0%)`;
+
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    submissionStatusDiv.textContent = `Файлыг ${file.name} илгээж байна... (${Math.round(progress)}%)`;
+                },
+                (error) => {
+                    console.error("Файл илгээхэд алдаа гарлаа:", error);
+                    submissionStatusDiv.classList.remove('text-blue-800');
+                    submissionStatusDiv.classList.add('text-red-800');
+                    submissionStatusDiv.textContent = `Файл илгээхэд алдаа гарлаа: ${error.message}`;
+                },
+                async () => {
+                    try {
+                        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+                        console.log('Файл амжилттай илгээгдлээ, URL:', downloadURL);
+
+                        // Файлын URL болон бусад мэдээллийг Firestore-д хадгалах
+                        await addDoc(collection(db, `artifacts/${appId}/public/data/assignments`), {
+                            userId: currentUserId,
+                            lessonId: lessonId,
+                            fileName: fileName,
+                            fileURL: downloadURL,
+                            timestamp: new Date(),
+                            class: document.getElementById('student-class').value || 'N/A', // Тоглоомын анги, бүлэг эсвэл N/A
+                            group: document.getElementById('student-group').value || 'N/A'
+                        });
+
+                        submissionStatusDiv.classList.remove('text-blue-800');
+                        submissionStatusDiv.classList.add('text-green-800');
+                        submissionStatusDiv.textContent = `Даалгавар ${file.name} амжилттай хураагдлаа! Багш таны файлыг удахгүй шалгана.`;
+                        fileInput.value = ''; // Файл сонголтыг цэвэрлэх
+                    } catch (error) {
+                        console.error("Файлын URL-г хадгалахад эсвэл даалгаврын мэдээлэл нэмэхэд алдаа гарлаа:", error);
+                        submissionStatusDiv.classList.remove('text-blue-800');
+                        submissionStatusDiv.classList.add('text-red-800');
+                        submissionStatusDiv.textContent = `Даалгавар хураахад алдаа гарлаа: ${error.message}`;
+                    } finally {
+                        setTimeout(() => {
+                            submissionStatusDiv.classList.add('hidden');
+                        }, 5000); // 5 секундын дараа статусыг нуух
+                    }
+                }
+            );
+        }
     </script>
 </body>
-
 </html>
