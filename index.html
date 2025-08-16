@@ -58,6 +58,11 @@
             background-size: cover;
             background-position: center;
             position: relative;
+            min-height: 400px; /* Adjust as needed */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         /* Loading overlay style for Game */
         .loading-overlay {
@@ -86,6 +91,9 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Уулын оргилд гарсан үеийн зураг */
+        /* #summit-image { removed } */
 
         /* --- Chatbot CSS --- */
         .chat-container {
@@ -280,8 +288,8 @@
                             <div id="assignment-questions-earthquake" class="space-y-3 mb-4">
                                 <!-- Даалгаврын асуултууд энд ачаална -->
                             </div>
-                            <!-- New: File Upload Section -->
-                            <div class="border-t border-gray-200 pt-4 mt-4">
+                            <!-- Assign a class to this section for easy targeting -->
+                            <div class="assignment-upload-section border-t border-gray-200 pt-4 mt-4">
                                 <h5 class="font-semibold text-gray-800 mb-2 flex items-center">
                                     <i class="fas fa-upload mr-2 text-blue-500"></i> Бие даалтын даалгавар хураалгах
                                 </h4>
@@ -329,7 +337,7 @@
                                 </h4>
                                 <ul class="list-disc list-inside text-gray-700 space-y-1 pl-4">
                                     <li>Үерийн аюулын дохиог анхаарч сонсох</li>
-                                    <li>Өндөрлөг газар руу шилжих төлөвлөгөөтэй байх</li>
+                                    <li>Өндөрлөг газар руу нүүлгэн шилжих төлөвлөгөөтэй байх</li>
                                     <li>Үерийн усанд орохгүй байх</li>
                                     <li>Өндөр давхарт эсвэл дээвэр дээр гарах</li>
                                 </ul>
@@ -352,8 +360,8 @@
                             <div id="assignment-questions-flood" class="space-y-3 mb-4">
                                 <!-- Даалгаврын асуултууд энд ачаална -->
                             </div>
-                            <!-- New: File Upload Section -->
-                            <div class="border-t border-gray-200 pt-4 mt-4">
+                            <!-- Assign a class to this section for easy targeting -->
+                            <div class="assignment-upload-section border-t border-gray-200 pt-4 mt-4">
                                 <h5 class="font-semibold text-gray-800 mb-2 flex items-center">
                                     <i class="fas fa-upload mr-2 text-blue-500"></i> Бие даалтын даалгавар хураалгах
                                 </h4>
@@ -424,8 +432,8 @@
                             <div id="assignment-questions-fire" class="space-y-3 mb-4">
                                 <!-- Даалгаврын асуултууд энд ачаална -->
                             </div>
-                            <!-- New: File Upload Section -->
-                            <div class="border-t border-gray-200 pt-4 mt-4">
+                            <!-- Assign a class to this section for easy targeting -->
+                            <div class="assignment-upload-section border-t border-gray-200 pt-4 mt-4">
                                 <h5 class="font-semibold text-gray-800 mb-2 flex items-center">
                                     <i class="fas fa-upload mr-2 text-blue-500"></i> Бие даалтын даалгавар хураалгах
                                 </h4>
@@ -496,8 +504,8 @@
                             <div id="assignment-questions-blizzard" class="space-y-3 mb-4">
                                 <!-- Даалгаврын асуултууд энд ачаална -->
                             </div>
-                            <!-- New: File Upload Section -->
-                            <div class="border-t border-gray-200 pt-4 mt-4">
+                            <!-- Assign a class to this section for easy targeting -->
+                            <div class="assignment-upload-section border-t border-gray-200 pt-4 mt-4">
                                 <h5 class="font-semibold text-gray-800 mb-2 flex items-center">
                                     <i class="fas fa-upload mr-2 text-blue-500"></i> Бие даалтын даалгавар хураалгах
                                 </h4>
@@ -586,8 +594,8 @@
                             <div id="assignment-questions-emergency-kit" class="space-y-3 mb-4">
                                 <!-- Даалгаврын асуултууд энд ачаална -->
                             </div>
-                            <!-- New: File Upload Section -->
-                            <div class="border-t border-gray-200 pt-4 mt-4">
+                            <!-- Assign a class to this section for easy targeting -->
+                            <div class="assignment-upload-section border-t border-gray-200 pt-4 mt-4">
                                 <h5 class="font-semibold text-gray-800 mb-2 flex items-center">
                                     <i class="fas fa-upload mr-2 text-blue-500"></i> Бие даалтын даалгавар хураалгах
                                 </h4>
@@ -633,6 +641,7 @@
                     </div>
 
                     <div id="question-display" class="bg-blue-100 p-4 rounded-lg shadow-inner mb-4 hidden">
+                        <p id="question-count-text" class="text-sm text-gray-600 mb-2 text-right"></p>
                         <p id="question-text" class="text-xl font-medium text-gray-900 mb-3 text-center"></p>
                         <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3">
                             <!-- Сонголтууд энд ачаална -->
@@ -642,6 +651,8 @@
                     <div id="feedback-display" class="p-3 mt-4 rounded-lg text-center font-medium hidden"></div>
                     <div id="save-status-display" class="p-3 mt-4 rounded-lg text-center font-medium hidden"></div>
 
+                    <!-- Шинэ: Ялалтын зураг - Энэ хэсгийг устгасан -->
+                    <!-- <img id="summit-image" src="https://placehold.co/400x300/3498db/ffffff?text=Уулын+оргил+" alt="Уулын оргилд гарлаа" class="hidden mx-auto my-4"> -->
 
                     <button id="start-button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-300 transform hover:scale-105 w-full mt-6">Тоглоом эхлүүлэх</button>
                 </div>
@@ -748,7 +759,6 @@
         // Global variables provided by Canvas environment
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-        // Fix: Use __initial_auth_token on the right side to avoid self-reference error.
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 
         let db;
@@ -985,6 +995,16 @@
                         assignmentQuestionsDiv.appendChild(questionWrapper);
                     });
                 }
+
+                // Hide/show assignment upload section based on grade
+                const uploadSection = lessonCard.querySelector('.assignment-upload-section');
+                if (uploadSection) {
+                    if (grade === 'Бага анги') {
+                        uploadSection.classList.add('hidden');
+                    } else {
+                        uploadSection.classList.remove('hidden');
+                    }
+                }
             });
         }
 
@@ -1000,7 +1020,8 @@
 
 
         // --- Mountain Climb Game JavaScript Script ---
-        const questions = [
+        // Enhanced list of questions to ensure variety for 10 questions
+        const allGameQuestions = [
             {
                 "question": "Газар хөдлөлтийн үед юу хийх ёстой вэ?",
                 "options": {
@@ -1066,17 +1087,84 @@
                 },
                 "answer": "Б",
                 "explanation": "Хүчтэй салхи шуурганы үед цонх, хаалгыг бэхэлж, аюулгүй, цонхгүй өрөөнд байрлах нь зүйтэй."
+            },
+            {
+                "question": "Үер буухад цахилгааны аюулгүй байдлыг хэрхэн хангах вэ?",
+                "options": {
+                    "А": "Цахилгааныг салгахгүй байх",
+                    "Б": "Үерийн усанд цахилгаантай холбоотой юманд хүрэх",
+                    "В": "Цахилгааныг үндсэн хэлхээнээс салгах",
+                    "Г": "Утасгүй цэнэглэгч ашиглах"
+                },
+                "answer": "В",
+                "explanation": "Үерлэж байх үед цахилгаанд цохиулах эрсдэлээс сэргийлэхийн тулд цахилгааныг үндсэн хэлхээнээс салгах нь чухал."
+            },
+            {
+                "question": "Гал түймрээс урьдчилан сэргийлэх хамгийн энгийн арга юу вэ?",
+                "options": {
+                    "А": "Утааны дохиолол тавихгүй байх",
+                    "Б": "Ил гал үүсгэх",
+                    "В": "Утааны дохиолол тавьж, байнга шалгах",
+                    "Г": "Шатамхай зүйлийг галын ойролцоо байлгах"
+                },
+                "answer": "В",
+                "explanation": "Утааны дохиолол нь галын эрсдэлийг эрт илрүүлж, хүний амь насыг аврахад чухал үүрэгтэй."
+            },
+            {
+                "question": "Цасан шуурганы үед ямар хувцас өмсөх нь хамгийн тохиромжтой вэ?",
+                "options": {
+                    "А": "Нимгэн, хөвөн хувцас",
+                    "Б": "Давхарлаж өмсөх дулаан, ус нэвтрүүлдэггүй хувцас",
+                    "В": "Богино ханцуйтай цамц, шорт",
+                    "Г": "Зөвхөн нэг зузаан хүрэм"
+                },
+                "answer": "Б",
+                "explanation": "Давхарлаж өмсөх нь биеийн дулааныг илүү сайн хадгалдаг бөгөөд ус нэвтрүүлдэггүй хувцас нь цас, хүйтнээс хамгаална."
+            },
+            {
+                "question": "Яаралтай тусламжийн цүнхэнд ямар бичиг баримтын хуулбарыг хийх ёстой вэ?",
+                "options": {
+                    "А": "Киноны тасалбар",
+                    "Б": "Иргэний үнэмлэх, төрсний гэрчилгээ, банкны дансны мэдээлэл зэрэг чухал бичиг баримтуудын хуулбар",
+                    "В": "Хуучин сонин",
+                    "Г": "Хоосон цаас"
+                },
+                "answer": "Б",
+                "explanation": "Гамшгийн үед чухал бичиг баримтууд алга болсон тохиолдолд тэдгээрийн хуулбар нь иргэний үнэмлэхээ баталгаажуулах, санхүүгийн асуудлыг шийдвэрлэхэд чухал үүрэгтэй."
+            },
+            {
+                "question": "Газар хөдлөлтийн үед цахилгаан шат ашиглах нь яагаад аюултай вэ?",
+                "options": {
+                    "А": "Цахилгаан шатны хөдөлгөөн хурдасдаг",
+                    "Б": "Цахилгаан тасарч, шатанд гацах магадлалтай",
+                    "В": "Бусад хүмүүстэй хамт байх таагүй",
+                    "Г": "Цахилгаан шат унах магадлалтай"
+                },
+                "answer": "Б",
+                "explanation": "Газар хөдлөлтийн үед цахилгаан тасарч, цахилгаан шат гацаж, дотор нь гацах аюултай."
+            },
+            {
+                "question": "Үерийн дараа эрүүл мэндээ хамгаалахын тулд юу хийх вэ?",
+                "options": {
+                    "А": "Бохирдсон усыг уух",
+                    "Б": "Үерийн усанд дүрсэн хоол хүнс хэрэглэх",
+                    "В": "Гараа тогтмол угааж, аюулгүй усыг хэрэглэх",
+                    "Г": "Эмнэлэгт очихгүй байх"
+                },
+                "answer": "В",
+                "explanation": "Үерийн дараа ус бохирдож, өвчин үүсгэгч нян тархах эрсдэл өндөр байдаг тул хувийн ариун цэврийг сахиж, аюулгүй ус хэрэглэх нь чухал."
             }
         ];
 
         // Тоглоомын тохиргоо
         const SUMMIT_ALTITUDE = 100;
-        const ALTITUDE_GAIN_PER_CORRECT_ANSWER = 20;
-        const ALTITUDE_PENALTY_PER_INCORRECT_ANSWER = 5;
+        const ALTITUDE_GAIN_PER_CORRECT_ANSWER = 10; // 1 асуултад 10м ахина
+        const ALTITUDE_PENALTY_PER_INCORRECT_ANSWER = 5; // Буруу хариулбал 5м буцаж унана
+        const QUESTIONS_TO_ASK = 10; // Нийт 10 асуулт асууна
 
         let currentAltitude = 0;
-        let questionCount = 0;
-        let availableQuestions = [...questions]; // Асуултуудыг хуулж авах
+        let questionsAnsweredCount = 0;
+        let gameQuestions = []; // Тоглоом эхлэх үед сонгогдсон асуултууд
         let gameClass = '';
         let gameGroup = '';
 
@@ -1084,23 +1172,95 @@
         const currentAltitudeSpan = document.getElementById('current-altitude');
         const summitAltitudeSpan = document.getElementById('summit-altitude');
         const altitudeBar = document.getElementById('altitude-bar');
-        const questionDisplay = document.getElementById('question-display'); // Асуултын хэсэг
+        const questionDisplay = document.getElementById('question-display');
+        const questionCountText = document.getElementById('question-count-text'); // Асуултын дугаар
         const questionText = document.getElementById('question-text');
         const optionsContainer = document.getElementById('options-container');
         const feedbackDisplay = document.getElementById('feedback-display');
         const startButton = document.getElementById('start-button');
-        const gameLoadingOverlay = document.getElementById('loading-overlay'); // Game-ийн loading overlay
-        const gameContent = document.getElementById('game-content'); // game-area-г game-content болгосон
+        const gameLoadingOverlay = document.getElementById('loading-overlay');
         const playerInfoForm = document.getElementById('player-info-form');
         const studentClassInput = document.getElementById('student-class');
         const studentGroupInput = document.getElementById('student-group');
         const saveStatusDisplay = document.getElementById('save-status-display');
+        // const summitImage = document.getElementById('summit-image'); // Устгасан зурганд хандах хэсгийг устгасан
 
 
         // Эхний тохиргоо
         summitAltitudeSpan.textContent = SUMMIT_ALTITUDE;
-        startButton.addEventListener('click', startGame);
+        
+        // --- Game Logic Functions ---
 
+        // Start the game
+        async function startGame() {
+            gameClass = studentClassInput.value.trim();
+            gameGroup = studentGroupInput.value.trim();
+
+            if (!gameClass || !gameGroup) {
+                saveStatusDisplay.classList.remove('hidden', 'bg-green-100', 'text-green-800');
+                saveStatusDisplay.classList.add('bg-red-100', 'text-red-800');
+                saveStatusDisplay.textContent = "Тоглоом эхлүүлэхийн тулд анги болон бүлгийн мэдээллээ оруулна уу!";
+                return;
+            }
+
+            showGameLoading();
+            startButton.classList.add('hidden');
+            playerInfoForm.classList.add('hidden');
+            questionDisplay.classList.remove('hidden');
+            saveStatusDisplay.classList.add('hidden');
+            // summitImage.classList.add('hidden'); // Устгасан зурганд хандах хэсгийг устгасан
+
+            currentAltitude = 0;
+            questionsAnsweredCount = 0;
+            
+            // Асуултуудыг санамсаргүй байдлаар хольж, эхний 10-г сонгох
+            const shuffledQuestions = [...allGameQuestions].sort(() => 0.5 - Math.random());
+            gameQuestions = shuffledQuestions.slice(0, QUESTIONS_TO_ASK);
+
+            updateDisplay();
+            setTimeout(() => {
+                hideGameLoading();
+                displayQuestion();
+            }, 500); // Богино ачааллын хугацаа
+        }
+
+        async function endGame() {
+            clearGameDisplay();
+            let message = "";
+            let messageClass = "";
+            let isWin = false;
+
+            // 10 асуултад хариулсны дараа өндөрөөр нь үнэлэх
+            if (currentAltitude >= SUMMIT_ALTITUDE) {
+                message = "Баяр хүргэе! Та уулын оргилд амжилттай гарч чадлаа!";
+                messageClass = "bg-green-200 text-green-900";
+                isWin = true;
+                // summitImage.classList.remove('hidden'); // Устгасан зурганд хандах хэсгийг устгасан
+            } else {
+                message = `Уучлаарай, дахин судлана уу. Та ${currentAltitude}м өндөрт хүрсэн байна.`; // Changed message
+                messageClass = "bg-red-200 text-red-900";
+                isWin = false;
+                // summitImage.classList.add('hidden'); // Устгасан зурганд хандах хэсгийг устгасан
+            }
+            
+            questionText.textContent = message;
+            questionText.classList.add(...messageClass.split(' ')); // Fix: Use spread operator for multiple classes
+            questionText.classList.remove('mb-3');
+
+            optionsContainer.innerHTML = ''; // Сонголтуудыг цэвэрлэх
+            feedbackDisplay.classList.add('hidden');
+
+            startButton.textContent = "Дахин тоглох";
+            startButton.classList.remove('hidden');
+            playerInfoForm.classList.remove('hidden');
+
+            hideGameLoading();
+
+            // Save game result to Firestore
+            await saveGameResult(isWin, currentAltitude, gameClass, gameGroup);
+        }
+
+        // Functions used by startGame and endGame
         function showGameLoading() {
             gameLoadingOverlay.classList.remove('hidden');
         }
@@ -1113,29 +1273,30 @@
             currentAltitudeSpan.textContent = currentAltitude;
             const progress = (currentAltitude / SUMMIT_ALTITUDE) * 100;
             altitudeBar.style.width = `${progress}%`;
-            if (currentAltitude >= SUMMIT_ALTITUDE * 0.7) { // 70%-с дээш бол ногоон болгох
+            if (currentAltitude >= SUMMIT_ALTITUDE * 0.7) {
                 altitudeBar.classList.remove('bg-yellow-500', 'bg-red-500');
                 altitudeBar.classList.add('bg-green-500');
-            } else if (currentAltitude >= SUMMIT_ALTITUDE * 0.3) { // 30%-с дээш бол шар болгох
+            } else if (currentAltitude >= SUMMIT_ALTITUDE * 0.3) {
                 altitudeBar.classList.remove('bg-green-500', 'bg-red-500');
                 altitudeBar.classList.add('bg-yellow-500');
-            } else { // 30%-с доош бол улаан болгох
+            } else {
                 altitudeBar.classList.remove('bg-green-500', 'bg-yellow-500');
                 altitudeBar.classList.add('bg-red-500');
             }
         }
 
         function displayQuestion() {
-            if (availableQuestions.length === 0) {
-                // Бүх асуултад хариулсан бол дахин холих
-                availableQuestions = [...questions];
+            if (questionsAnsweredCount >= QUESTIONS_TO_ASK) {
+                endGame();
+                return;
             }
-            const randomIndex = Math.floor(Math.random() * availableQuestions.length);
-            const currentQuestion = availableQuestions[randomIndex];
-            availableQuestions.splice(randomIndex, 1); // Асуултыг сонгосны дараа устгах
 
+            // GameQuestions-аас асуулт авах (энд аль хэдийнэ 10 асуулт сонгогдсон байгаа)
+            const currentQuestion = gameQuestions[questionsAnsweredCount]; 
+            
+            questionCountText.textContent = `Асуулт: ${questionsAnsweredCount + 1} / ${QUESTIONS_TO_ASK}`;
             questionText.textContent = currentQuestion.question;
-            optionsContainer.innerHTML = ''; // Сонголтуудыг цэвэрлэх
+            optionsContainer.innerHTML = '';
 
             for (const key in currentQuestion.options) {
                 const button = document.createElement('button');
@@ -1144,13 +1305,15 @@
                 button.addEventListener('click', () => checkAnswer(key, currentQuestion.answer, currentQuestion.explanation));
                 optionsContainer.appendChild(button);
             }
-            feedbackDisplay.classList.add('hidden'); // Санал хүсэлтийн мэдээллийг нуух
+            feedbackDisplay.classList.add('hidden');
+            // summitImage.classList.add('hidden'); // Устгасан зурганд хандах хэсгийг устгасан
         }
 
         async function checkAnswer(userAnswer, correctAnswer, explanation) {
-            showGameLoading(); // Ачаалж байгааг харуулах
-            // Сонголтын товчлууруудыг идэвхгүй болгох
+            showGameLoading();
             Array.from(optionsContainer.children).forEach(btn => btn.disabled = true);
+
+            questionsAnsweredCount++; // Асуултад хариулсан тоог нэмэгдүүлэх
 
             if (userAnswer === correctAnswer) {
                 currentAltitude += ALTITUDE_GAIN_PER_CORRECT_ANSWER;
@@ -1166,74 +1329,18 @@
                 feedbackDisplay.classList.add('bg-red-100', 'text-red-800');
                 feedbackDisplay.textContent = `Буруу хариуллаа. Зөв хариулт нь: ${correctAnswer}. Тайлбар: ${explanation}`;
             }
-            feedbackDisplay.classList.remove('hidden'); // Санал хүсэлтийг харуулах
+            feedbackDisplay.classList.remove('hidden');
             updateDisplay();
 
             setTimeout(() => {
-                if (currentAltitude >= SUMMIT_ALTITUDE) {
-                    endGame(true);
+                if (questionsAnsweredCount >= QUESTIONS_TO_ASK) { // 10 асуултад хариулсан эсэхийг шалгах
+                    endGame();
                 } else {
-                    hideGameLoading(); // Ачаалж байгааг нуух
+                    hideGameLoading();
                     displayQuestion();
-                     // Сонголтын товчлууруудыг дахин идэвхжүүлэх
                     Array.from(optionsContainer.children).forEach(btn => btn.disabled = false);
                 }
             }, 2000); // 2 секунд хүлээх
-        }
-
-        async function startGame() {
-            gameClass = studentClassInput.value.trim();
-            gameGroup = studentGroupInput.value.trim();
-
-            if (!gameClass || !gameGroup) {
-                saveStatusDisplay.classList.remove('hidden', 'bg-green-100', 'text-green-800');
-                saveStatusDisplay.classList.add('bg-red-100', 'text-red-800');
-                saveStatusDisplay.textContent = "Тоглоом эхлүүлэхийн тулд анги болон бүлгийн мэдээллээ оруулна уу!";
-                return;
-            }
-
-            showGameLoading(); // Ачаалж байгааг харуулах
-            startButton.classList.add('hidden'); // Эхлүүлэх товчийг нуух
-            playerInfoForm.classList.add('hidden'); // Мэдээлэл оруулах хэсгийг нуух
-            questionDisplay.classList.remove('hidden'); // Асуултын хэсгийг харуулах
-            saveStatusDisplay.classList.add('hidden'); // Мэдээлэл хадгалах статусыг нуух
-
-            currentAltitude = 0;
-            questionCount = 0;
-            availableQuestions = [...questions]; // Тоглоом эхлэхэд асуултуудыг дахин цэнэглэх
-            updateDisplay();
-            setTimeout(() => {
-                hideGameLoading(); // Ачаалж байгааг нуух
-                displayQuestion();
-            }, 500); // Богино ачааллын хугацаа
-        }
-
-        async function endGame(isWin) {
-            clearGameDisplay();
-            let message = "";
-            let messageClass = "";
-            if (isWin) {
-                message = "🎉🎉🎉 БАЯР ХҮРГЭЕ! Та уулын оргилд гарч, тугаа өргөлөө! 🎉🎉🎉\nГамшгийн аюулаас хамгаалах мэдлэг тань амьдралыг аврах чухал ач холбогдолтой!";
-                messageClass = "bg-green-200 text-green-900";
-            } else {
-                message = "Тоглоом дууслаа. Дахин оролдож мэдлэгээ сайжруулаарай!";
-                messageClass = "bg-red-200 text-red-900";
-            }
-            questionText.textContent = message;
-            questionText.classList.add(messageClass);
-            questionText.classList.remove('mb-3'); // Зай арилгах
-
-            optionsContainer.innerHTML = '';
-            feedbackDisplay.classList.add('hidden');
-
-            startButton.textContent = "Дахин тоглох";
-            startButton.classList.remove('hidden'); // Тоглоомыг дахин эхлүүлэх товчийг харуулах
-            playerInfoForm.classList.remove('hidden'); // Мэдээлэл оруулах хэсгийг дахин харуулах
-
-            hideGameLoading(); // Ачаалж байгааг нуух
-
-            // Save game result to Firestore
-            await saveGameResult(isWin, currentAltitude, gameClass, gameGroup);
         }
 
         async function saveGameResult(isWin, finalAltitude, studentClass, studentGroup) {
@@ -1278,12 +1385,17 @@
 
         function clearGameDisplay() {
             questionText.classList.remove('bg-green-200', 'text-green-900', 'bg-red-200', 'text-red-900');
+            questionCountText.textContent = ""; // Асуултын тоог цэвэрлэх
         }
+
+        // --- Event Listeners ---
+        startButton.addEventListener('click', startGame);
 
         // Тоглоом эхлэхээс өмнө тоглоомын хэсгийг нуух
         document.addEventListener('DOMContentLoaded', () => {
             questionDisplay.classList.add('hidden'); // Асуултын хэсгийг анхнаасаа нуух
             hideGameLoading();
+            // summitImage.classList.add('hidden'); // Устгасан зурганд хандах хэсгийг устгасан
         });
 
         // --- Chatbot Script ---
