@@ -161,6 +161,9 @@
                 <a href="#game-section" class="px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center">
                     <i class="fas fa-gamepad mr-2"></i> Тоглоом
                 </a>
+                <a href="#game-results-section" class="px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center">
+                    <i class="fas fa-chart-bar mr-2"></i> Үр дүнгүүд
+                </a>
                 <a href="#chatbot-section" class="px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center">
                     <i class="fas fa-comments mr-2"></i> Чатбот
                 </a>
@@ -187,6 +190,9 @@
             </a>
             <a href="#game-section" class="px-4 py-3 rounded-lg hover:bg-blue-800 transition duration-300 flex items-center">
                 <i class="fas fa-gamepad mr-3"></i> Тоглоом
+            </a>
+            <a href="#game-results-section" class="px-4 py-3 rounded-lg hover:bg-blue-800 transition duration-300 flex items-center">
+                <i class="fas fa-chart-bar mr-3"></i> Үр дүнгүүд
             </a>
             <a href="#chatbot-section" class="px-4 py-3 rounded-lg hover:bg-blue-800 transition duration-300 flex items-center">
                 <i class="fas fa-comments mr-3"></i> Чатбот
@@ -665,6 +671,70 @@
             </div>
         </section>
 
+        <!-- Game Results Section (Шинээр нэмэгдсэн) -->
+        <section id="game-results-section" class="bg-gradient-to-r from-purple-100 to-purple-200 rounded-xl shadow-xl p-8 mb-16 border-2 border-purple-300 hidden">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-purple-800 mb-4">Тоглоомын Үр дүнгүүд</h2>
+                <div class="w-24 h-1 bg-purple-500 mx-auto mb-6"></div>
+                <p class="text-gray-700 max-w-3xl mx-auto">Энд та өөрийн болон бусад тоглогчдын тоглоомын үр дүнг харах боломжтой. Хамгийн өндөр оноог хэн авсныг шалгаарай!</p>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 max-w-4xl mx-auto">
+                <div id="results-summary" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 text-center">
+                    <div class="bg-purple-50 p-4 rounded-lg shadow-sm">
+                        <p class="text-sm text-gray-600">Нийт тоглосон тоо</p>
+                        <p id="total-games-played" class="text-2xl font-bold text-purple-700">0</p>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-lg shadow-sm">
+                        <p class="text-sm text-gray-600">Дундаж оноо</p>
+                        <p id="average-score" class="text-2xl font-bold text-purple-700">0</p>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-lg shadow-sm">
+                        <p class="text-sm text-gray-600">Хамгийн өндөр оноо</p>
+                        <p id="highest-score" class="text-2xl font-bold text-purple-700">0</p>
+                    </div>
+                </div>
+
+                <div id="results-table-container" class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg">
+                                    Хэрэглэгч ID
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Анги
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Бүлэг
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Оноо
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Үр дүн
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg">
+                                    Огноо
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="game-results-body" class="bg-white divide-y divide-gray-200">
+                            <!-- Үр дүнгүүд энд ачаална -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="game-results-loading-indicator" class="mt-4 text-center text-gray-600 flex items-center justify-center hidden">
+                    <div class="loading-spinner mr-2"></div>
+                    Үр дүнгүүдийг ачаалж байна...
+                </div>
+                <div id="game-results-error-message" class="mt-4 text-center text-red-600 hidden">
+                    Үр дүнгүүдийг ачаалахад алдаа гарлаа. Дахин оролдоно уу.
+                </div>
+            </div>
+        </section>
+
+
         <!-- Chatbot Section (Шинээр нэмэгдсэн) -->
         <section id="chatbot-section" class="bg-gradient-to-r from-green-100 to-green-200 rounded-xl shadow-xl p-8 mb-16 border-2 border-green-300">
             <div class="text-center mb-8">
@@ -752,7 +822,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore.js";
         import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.6.0/firebase-storage.js";
 
 
@@ -823,6 +893,15 @@
                     const lessonId = event.target.id.replace('submit-assignment-', '');
                     handleAssignmentSubmission(lessonId);
                 });
+            });
+
+            // "Үр дүнгүүд" navigation link-д event listener нэмэх
+            document.querySelector('a[href="#game-results-section"]').addEventListener('click', (event) => {
+                event.preventDefault();
+                document.getElementById('game-results-section').classList.remove('hidden');
+                loadGameResults();
+                // Scroll to section
+                document.getElementById('game-results-section').scrollIntoView({ behavior: 'smooth' });
             });
         });
 
@@ -1712,6 +1791,96 @@
 
         playAboutTextButton.addEventListener('click', playAboutText);
 
+        // --- Game Results Display Script ---
+        const gameResultsSection = document.getElementById('game-results-section');
+        const gameResultsBody = document.getElementById('game-results-body');
+        const totalGamesPlayedSpan = document.getElementById('total-games-played');
+        const averageScoreSpan = document.getElementById('average-score');
+        const highestScoreSpan = document.getElementById('highest-score');
+        const gameResultsLoadingIndicator = document.getElementById('game-results-loading-indicator');
+        const gameResultsErrorMessage = document.getElementById('game-results-error-message');
+
+
+        async function loadGameResults() {
+            if (!db) {
+                console.error("Firestore not initialized. Cannot load game results.");
+                gameResultsErrorMessage.classList.remove('hidden');
+                gameResultsErrorMessage.textContent = "Мэдээллийн сантай холбогдох боломжгүй байна. Дахин оролдоно уу.";
+                return;
+            }
+
+            gameResultsBody.innerHTML = ''; // Clear previous results
+            gameResultsLoadingIndicator.classList.remove('hidden');
+            gameResultsErrorMessage.classList.add('hidden');
+
+            try {
+                // Fetch all documents from the 'game_scores' collection for this appId
+                const q = query(collection(db, `artifacts/${appId}/public/data/game_scores`)); // OrderBy is removed to avoid index issues. Data will be sorted in JS.
+                const querySnapshot = await getDocs(q);
+
+                let totalScore = 0;
+                let highestScore = 0;
+                let games = [];
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    games.push(data);
+                    totalScore += data.finalAltitude;
+                    if (data.finalAltitude > highestScore) {
+                        highestScore = data.finalAltitude;
+                    }
+                });
+
+                // Sort games by timestamp descending
+                games.sort((a, b) => b.timestamp.toDate().getTime() - a.timestamp.toDate().getTime());
+
+                // Update summary statistics
+                totalGamesPlayedSpan.textContent = games.length;
+                averageScoreSpan.textContent = games.length > 0 ? (totalScore / games.length).toFixed(2) : '0';
+                highestScoreSpan.textContent = highestScore;
+
+                // Populate the table
+                if (games.length === 0) {
+                    gameResultsBody.innerHTML = `<tr><td colspan="6" class="px-6 py-4 whitespace-nowrap text-center text-gray-500">Одоогоор тоглоомын үр дүн байхгүй байна.</td></tr>`;
+                } else {
+                    games.forEach((data) => {
+                        const row = gameResultsBody.insertRow();
+                        row.classList.add('hover:bg-gray-100');
+                        
+                        const userIdCell = row.insertCell();
+                        userIdCell.classList.add('px-6', 'py-4', 'whitespace-nowrap', 'text-sm', 'font-medium', 'text-gray-900');
+                        userIdCell.textContent = data.userId ? data.userId.substring(0, 8) + '...' : 'Unknown'; // Show truncated User ID
+
+                        const classCell = row.insertCell();
+                        classCell.classList.add('px-6', 'py-4', 'whitespace-nowrap', 'text-sm', 'text-gray-500');
+                        classCell.textContent = data.class || 'N/A';
+
+                        const groupCell = row.insertCell();
+                        groupCell.classList.add('px-6', 'py-4', 'whitespace-nowrap', 'text-sm', 'text-gray-500');
+                        groupCell.textContent = data.group || 'N/A';
+
+                        const scoreCell = row.insertCell();
+                        scoreCell.classList.add('px-6', 'py-4', 'whitespace-nowrap', 'text-sm', 'text-gray-500');
+                        scoreCell.textContent = `${data.finalAltitude} м`;
+
+                        const resultCell = row.insertCell();
+                        resultCell.classList.add('px-6', 'py-4', 'whitespace-nowrap', 'text-sm', 'font-semibold');
+                        resultCell.textContent = data.isWin ? 'Ялалт' : 'Ялагдал';
+                        resultCell.classList.add(data.isWin ? 'text-green-600' : 'text-red-600');
+
+                        const dateCell = row.insertCell();
+                        dateCell.classList.add('px-6', 'py-4', 'whitespace-nowrap', 'text-sm', 'text-gray-500');
+                        dateCell.textContent = data.timestamp ? new Date(data.timestamp.toDate()).toLocaleString() : 'N/A';
+                    });
+                }
+            } catch (error) {
+                console.error("Error loading game results:", error);
+                gameResultsErrorMessage.classList.remove('hidden');
+                gameResultsErrorMessage.textContent = `Үр дүнгүүдийг ачаалахад алдаа гарлаа: ${error.message}`;
+            } finally {
+                gameResultsLoadingIndicator.classList.add('hidden');
+            }
+        }
     </script>
 </body>
 </html>
