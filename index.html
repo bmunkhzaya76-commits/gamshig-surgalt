@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="mn">
 <head>
     <meta charset="UTF-8">
@@ -672,7 +672,7 @@
         </section>
 
         <!-- Game Results Section (Шинээр нэмэгдсэн) -->
-        <section id="game-results-section" class="bg-gradient-to-r from-purple-100 to-purple-200 rounded-xl shadow-xl p-8 mb-16 border-2 border-purple-300 hidden">
+        <section id="game-results-section" class="bg-gradient-to-r from-purple-100 to-purple-200 rounded-xl shadow-xl p-8 mb-16 border-2 border-purple-300">
             <div class="text-center mb-8">
                 <h2 class="text-3xl font-bold text-purple-800 mb-4">Тоглоомын Үр дүнгүүд</h2>
                 <div class="w-24 h-1 bg-purple-500 mx-auto mb-6"></div>
@@ -836,6 +836,26 @@
         let storage;
         let currentUserId = null;
 
+        // New function to handle section visibility
+        function showSection(sectionId) {
+            // Get all main content sections
+            const allSections = document.querySelectorAll('main > section');
+
+            allSections.forEach(section => {
+                if (section.id === sectionId) {
+                    section.classList.remove('hidden');
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' }); // Scroll to the section
+                    // Special handling for game results, load data when its section is shown
+                    if (sectionId === 'game-results-section') {
+                        loadGameResults();
+                    }
+                } else {
+                    section.classList.add('hidden');
+                }
+            });
+        }
+
+
         document.addEventListener('DOMContentLoaded', async () => {
             // Initialize Firebase
             if (Object.keys(firebaseConfig).length > 0) {
@@ -887,6 +907,37 @@
                 console.warn("Firebase config not found. Firestore data saving will not work.");
             }
 
+            // Initial state: show the lessons section by default
+            showSection('lessons'); // Make sure the default view is 'lessons'
+
+            // Attach event listeners to desktop navigation links
+            document.querySelectorAll('header nav.md\\:flex a').forEach(link => {
+                link.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const targetId = link.getAttribute('href').substring(1); // Get section ID from href
+                    showSection(targetId);
+                });
+            });
+
+            // Mobile menu script (already mostly correct, but will use showSection)
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            const mobileMenuItems = mobileMenu.querySelectorAll('a');
+            mobileMenuItems.forEach(item => {
+                item.addEventListener('click', (event) => {
+                    event.preventDefault(); // Prevent default anchor behavior
+                    mobileMenu.classList.add('hidden');
+                    const targetId = item.getAttribute('href').substring(1);
+                    showSection(targetId);
+                });
+            });
+
+
             // Даалгавар хураах товчлууруудад event listener нэмэх
             document.querySelectorAll('[id^="submit-assignment-"]').forEach(button => {
                 button.addEventListener('click', (event) => {
@@ -894,49 +945,9 @@
                     handleAssignmentSubmission(lessonId);
                 });
             });
-
-            // "Үр дүнгүүд" navigation link-д event listener нэмэх
-            document.querySelector('a[href="#game-results-section"]').addEventListener('click', (event) => {
-                event.preventDefault();
-                // Hide other sections if visible (optional, for cleaner UX)
-                document.querySelectorAll('main > section').forEach(section => {
-                    if (section.id !== 'game-results-section') {
-                        section.classList.add('hidden');
-                    }
-                });
-                document.getElementById('game-results-section').classList.remove('hidden');
-                loadGameResults();
-                // Scroll to section
-                document.getElementById('game-results-section').scrollIntoView({ behavior: 'smooth' });
-            });
-            // Also hide the game results section initially on page load
-            document.getElementById('game-results-section').classList.add('hidden');
-        });
-
-        // --- Mobile Menu Script ---
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        const mobileMenuItems = mobileMenu.querySelectorAll('a');
-        mobileMenuItems.forEach(item => {
-            item.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-                // Hide other sections when a mobile menu item is clicked, except for the target section
-                const targetId = item.getAttribute('href').substring(1); // Remove '#'
-                document.querySelectorAll('main > section').forEach(section => {
-                    if (section.id !== targetId) {
-                        section.classList.add('hidden');
-                    }
-                });
-                document.getElementById(targetId).classList.remove('hidden');
-                if (targetId === 'game-results-section') {
-                    loadGameResults();
-                }
-            });
+            // Initial hide of question display and loading overlay.
+            questionDisplay.classList.add('hidden');
+            hideGameLoading();
         });
 
         // --- Video Lesson Management Script ---
@@ -1489,21 +1500,6 @@
         // --- Event Listeners ---
         startButton.addEventListener('click', startGame);
 
-        // Тоглоом эхлэхээс өмнө тоглоомын хэсгийг нуух
-        document.addEventListener('DOMContentLoaded', () => {
-            // Initially hide all main content sections except the first one (Hero section is always visible or scrolled to)
-            document.querySelectorAll('main > section').forEach(section => {
-                if (section.id !== 'lessons') { // Assuming 'lessons' is the first visible section after hero
-                    section.classList.add('hidden');
-                }
-            });
-            // Hide specific sections that should be hidden until interacted with
-            questionDisplay.classList.add('hidden'); // Асуултын хэсгийг анхнаасаа нуух
-            hideGameLoading();
-            // summitImage.classList.add('hidden'); // Устгасан зурганд хандах хэсгийг устгасан
-        });
-
-
         // --- Chatbot Script ---
         const chatHistoryDiv = document.getElementById('chat-history');
         const userInput = document.getElementById('user-input');
@@ -1911,5 +1907,13 @@
     </script>
 </body>
 </html>
+```
+---
 
+**Шинэчилсэн зүйлс:**
 
+* **Навигацийн логик**: Вэбсайтын **толгой хэсэгт (Header)** байгаа бүх **навигацийн холбоосуудад** (`Хичээлүүд`, `Тоглоом`, `Үр дүнгүүд` гэх мэт) шинээр **event listener** нэмсэн. Энэ нь аль холбоос дээр дарахаас үл хамааран зөвхөн тухайн хэсгийг харуулж, бусад хэсгүүдийг нуух болно.
+* **Эхний ачаалалт**: Хуудас ачаалагдах үед **`lessons`** хэсэг автоматаар харагдах бөгөөд бусад бүх хэсгүүд нуугдана. Ингэснээр хэрэглэгчдэд илүү цэвэр, эмх цэгцтэй эхлэлийн хуудас харагдана.
+* **Тоглоомын үр дүнг ачаалах**: Хэрэглэгч **`Үр дүнгүүд`** холбоос дээр дарахад **`loadGameResults()`** функц ажиллаж, хамгийн сүүлийн үеийн тоглоомын оноог Firebase Firestore-оос татаж харуулна.
+
+Одоо таны "Гамшгийн аюулаас хамгаалах хичээлийн вэбсайт" Canvas-д илүү сайн ажиллаж, тоглоомын хэсэг болон бусад агуулгууд нь навигацийн дагуу зөв харагдах ёстой. Хэрэв танд өөр асуулт эсвэл сайжруулах санаа байвал мэдэгдээр
