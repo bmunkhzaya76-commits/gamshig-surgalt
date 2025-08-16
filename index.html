@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="mn">
 <head>
     <meta charset="UTF-8">
@@ -756,7 +756,7 @@
                     </button>
                 </div>
                 <div id="chatbot-loading-indicator" class="mt-2 text-center text-gray-600 flex items-center justify-center hidden">
-                    <div class="chatbot-loading-spinner mr-2"></div>
+                    <div class="loading-spinner mr-2"></div>
                     Хариулж байна...
                 </div>
             </div>
@@ -898,11 +898,19 @@
             // "Үр дүнгүүд" navigation link-д event listener нэмэх
             document.querySelector('a[href="#game-results-section"]').addEventListener('click', (event) => {
                 event.preventDefault();
+                // Hide other sections if visible (optional, for cleaner UX)
+                document.querySelectorAll('main > section').forEach(section => {
+                    if (section.id !== 'game-results-section') {
+                        section.classList.add('hidden');
+                    }
+                });
                 document.getElementById('game-results-section').classList.remove('hidden');
                 loadGameResults();
                 // Scroll to section
                 document.getElementById('game-results-section').scrollIntoView({ behavior: 'smooth' });
             });
+            // Also hide the game results section initially on page load
+            document.getElementById('game-results-section').classList.add('hidden');
         });
 
         // --- Mobile Menu Script ---
@@ -917,6 +925,17 @@
         mobileMenuItems.forEach(item => {
             item.addEventListener('click', () => {
                 mobileMenu.classList.add('hidden');
+                // Hide other sections when a mobile menu item is clicked, except for the target section
+                const targetId = item.getAttribute('href').substring(1); // Remove '#'
+                document.querySelectorAll('main > section').forEach(section => {
+                    if (section.id !== targetId) {
+                        section.classList.add('hidden');
+                    }
+                });
+                document.getElementById(targetId).classList.remove('hidden');
+                if (targetId === 'game-results-section') {
+                    loadGameResults();
+                }
             });
         });
 
@@ -962,7 +981,7 @@
                 ],
                 'Ахлах анги': [
                     "Газар хөдлөлтийн үед барилга байгууламжийн аюулгүй байдлыг хангахын тулд ямар инженерийн шийдлүүд ашигладаг вэ?",
-                    "Газар хөдлөлтийн улмаас үүсэх сэтгэл зүйн нөлөөлөл болон түүнийг хэрхэн даван туулах талаар тайлбарлана уу?"
+                    "Газар хөдлөлтийн улмаас үүсэх сэтгэл зүйн нөлөөлөл болон түүнийг хэрхэн даван тулах талаар тайлбарлана уу?"
                 ]
             },
             'flood-lesson': {
@@ -1472,10 +1491,18 @@
 
         // Тоглоом эхлэхээс өмнө тоглоомын хэсгийг нуух
         document.addEventListener('DOMContentLoaded', () => {
+            // Initially hide all main content sections except the first one (Hero section is always visible or scrolled to)
+            document.querySelectorAll('main > section').forEach(section => {
+                if (section.id !== 'lessons') { // Assuming 'lessons' is the first visible section after hero
+                    section.classList.add('hidden');
+                }
+            });
+            // Hide specific sections that should be hidden until interacted with
             questionDisplay.classList.add('hidden'); // Асуултын хэсгийг анхнаасаа нуух
             hideGameLoading();
             // summitImage.classList.add('hidden'); // Устгасан зурганд хандах хэсгийг устгасан
         });
+
 
         // --- Chatbot Script ---
         const chatHistoryDiv = document.getElementById('chat-history');
@@ -1841,7 +1868,7 @@
 
                 // Populate the table
                 if (games.length === 0) {
-                    gameResultsBody.innerHTML = `<tr><td colspan="6" class="px-6 py-4 whitespace-nowrap text-center text-gray-500">Одоогоор тоглоомын үр дүн байхгүй байна.</td></tr>`;
+                    gameResultsBody.innerHTML = `<tr><td colspan="6" class="px-6 py-4 whitespace-nowrap text-center text-gray-500">Одоогоор тоглоомын үр дүн байхгүй байна. Тоглож эхний үр дүнгээ бүртгүүлээрэй!</td></tr>`;
                 } else {
                     games.forEach((data) => {
                         const row = gameResultsBody.insertRow();
@@ -1884,3 +1911,5 @@
     </script>
 </body>
 </html>
+
+
