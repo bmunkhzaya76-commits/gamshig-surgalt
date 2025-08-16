@@ -1511,7 +1511,7 @@
         // Харин та өөрийн компьютер дээрээ эсвэл бусад веб хостинг дээр ажиллуулж байгаа бол
         // Google AI Studio-с авсан API түлхүүрээ "YOUR_GEMINI_API_KEY_HERE" гэсэн хэсэгт оруулна уу.
         // Энэ нь аюулгүй байдлын үүднээс үйлдвэрлэлийн орчинд зөвлөгддөггүй болохыг анхаарна уу.
-        const API_KEY = ""; // Таны API түлхүүр энд байна. Canvas орчинд автоматаар хангагдана.
+        const API_KEY = "AIzaSyC47JGMbEnlubYvjWG51i2q9E19yy36qwQ"; // Таны API түлхүүр энд байна. Canvas орчинд автоматаар хангагдана.
         const MODEL_NAME = "gemini-2.5-flash-preview-05-20";
 
         async function fetchGeminiResponse(prompt, retries = 3, delay = 1000) {
@@ -1760,7 +1760,7 @@
                 model: "gemini-2.5-flash-preview-tts"
             };
 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=`; // Key will be provided by Canvas
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${API_KEY}`; // API_KEY-г энд ашиглана
 
             try {
                 const response = await fetch(apiUrl, {
@@ -1907,8 +1907,3 @@
     </script>
 </body>
 </html>
-```
----
-
-
-
