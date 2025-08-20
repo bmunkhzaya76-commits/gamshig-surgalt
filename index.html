@@ -54,16 +54,22 @@
 
         /* --- Уулын тоглоомын CSS --- */
         .game-area-container { /* Тоглоомын гаднах контейнер */
-            background-image: url('https://images.unsplash.com/photo-1542621334-a254cf47733d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80'); /* Уулын зураг */
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1519681393784-a93987cb0f74?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80'); /* Шинэ уулын зураг + хагас тунгалаг давхарга */
             background-size: cover;
             background-position: center;
             position: relative;
-            min-height: 400px; /* Adjust as needed */
+            min-height: 500px; /* Өндрийг нэмэгдүүлсэн */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            color: white; /* Текстний өнгийг цагаан болгосон */
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5); /* Текстэнд сүүдэр нэмсэн */
         }
+        .game-area-container h3, .game-area-container p {
+            color: white; /* Тоглоомын доторх текст цагаан байна */
+        }
+
         /* Loading overlay style for Game */
         .loading-overlay {
             position: absolute;
@@ -71,13 +77,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(255, 255, 255, 0.9); /* Илүү цайвар болгосон */
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             z-index: 1000;
-            border-radius: 0.75rem; /* rounded-xl-тэй тохируулах */
+            border-radius: 0.75rem;
+            color: #333; /* Текстний өнгө */
         }
         .loading-spinner {
             border: 4px solid rgba(0, 0, 0, 0.1);
@@ -92,8 +99,110 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Уулын оргилд гарсан үеийн зураг */
-        /* #summit-image { removed } */
+        /* Altitude Bar Gradient */
+        /* Vertical bar will use height-based gradient */
+        #altitude-bar {
+            background: linear-gradient(to top, #ef4444, #dc2626); /* Default Red gradient, now vertical */
+            width: 100%; /* Should fill its parent horizontally */
+            transition: height 0.5s ease-out, background 0.5s ease; /* Transition for height and background */
+        }
+
+        #altitude-bar.bg-red-500 {
+            background: linear-gradient(to top, #ef4444, #dc2626); /* Red gradient */
+        }
+        #altitude-bar.bg-yellow-500 {
+            background: linear-gradient(to top, #facc15, #eab308); /* Yellow gradient */
+        }
+        #altitude-bar.bg-green-500 {
+            background: linear-gradient(to top, #22c55e, #16a34a); /* Green gradient */
+        }
+
+
+        /* Question & Options Styling */
+        #question-display {
+            background-color: rgba(255, 255, 255, 0.9); /* Хагас тунгалаг цагаан */
+            color: #333; /* Текстний өнгө */
+            border-radius: 1rem; /* Илүү бөөрөнхий */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Сүүдэр */
+        }
+        #question-display p {
+            color: #333; /* Асуултын текст */
+        }
+        #options-container button {
+            background-color: #60a5fa; /* Blue-400 */
+            border: none;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        #options-container button:hover {
+            background-color: #3b82f6; /* Blue-500 */
+            transform: translateY(-2px);
+        }
+
+        /* Feedback Styling */
+        #feedback-display {
+            font-size: 1.1rem; /* Томруулсан */
+            padding: 1rem;
+            border-radius: 0.75rem;
+            animation: fadeInOut 2s forwards; /* Animation added */
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(-10px); }
+            20% { opacity: 1; transform: translateY(0); }
+            80% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(-10px); }
+        }
+        
+        #save-status-display {
+            animation: fadeInOut 3s forwards;
+        }
+
+        /* Start Button Animation */
+        #start-button {
+            background: linear-gradient(to right, #3b82f6, #2563eb); /* Blue gradient */
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        #start-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+        #start-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.3);
+            transform: skewX(-30deg);
+            transition: all 0.5s ease;
+        }
+        #start-button:hover::before {
+            left: 100%;
+        }
+
+        /* Climber Dot Styling (updated for vertical track) */
+        #climber-dot {
+            position: absolute;
+            left: 50%; /* Center horizontally within its track */
+            transform: translateX(-50%);
+            width: 40px; /* Slightly larger for visibility */
+            height: 40px;
+            background-color: rgba(252, 165, 165, 0.8); /* Pinkish-red, slightly transparent */
+            border-radius: 50%;
+            border: 2px solid white;
+            transition: bottom 1.5s ease-out; /* Smooth transition for vertical movement */
+            z-index: 50; /* Above the bar */
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+            font-size: 1.6rem; /* Make icon larger */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white; /* Icon color */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* Text shadow for icon */
+        }
 
         /* --- Chatbot CSS --- */
         .chat-container {
@@ -631,43 +740,48 @@
                 <h3 class="text-3xl md:text-4xl font-bold text-blue-700 mb-4 text-center">Уулын оргил өөд авирах тоглоом</h3>
                 <p class="text-gray-700 mb-6 text-center">Гамшгийн аюулаас хамгаалах мэдлэгээ шалгаж, оргилд хүр!</p>
 
-                <div class="w-full bg-gray-200 rounded-full h-4 mb-4">
-                    <div id="altitude-bar" class="bg-red-500 h-4 rounded-full transition-all duration-500" style="width: 0%;"></div>
-                </div>
-                <p class="text-lg font-semibold text-gray-800 mb-6">Одоогийн өндөр: <span id="current-altitude">0</span> м / <span id="summit-altitude">100</span> м</p>
-
-                <div id="game-content" class="w-full">
-                    <!-- Анги, Бүлэг оруулах хэсэг -->
-                    <div id="player-info-form" class="mb-4 p-4 bg-gray-50 rounded-lg shadow-inner">
-                        <label for="student-class" class="block text-gray-700 text-sm font-bold mb-2">Анги:</label>
-                        <input type="text" id="student-class" placeholder="Жишээ нь: 5Б" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4">
-                        
-                        <label for="student-group" class="block text-gray-700 text-sm font-bold mb-2">Бүлэг (Нэр/Код):</label>
-                        <input type="text" id="student-group" placeholder="Жишээ нь: Сармагчин баг / B2" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                    </div>
-
-                    <div id="question-display" class="bg-blue-100 p-4 rounded-lg shadow-inner mb-4 hidden">
-                        <p id="question-count-text" class="text-sm text-gray-600 mb-2 text-right"></p>
-                        <p id="question-text" class="text-xl font-medium text-gray-900 mb-3 text-center"></p>
-                        <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <!-- Сонголтууд энд ачаална -->
+                <!-- Шинэчилсэн: Тоглоомын агуулга ба авирагчийн байрлал -->
+                <div class="flex flex-col md:flex-row gap-6 w-full items-start">
+                    <!-- Зүүн тал: Тоглоомын үндсэн UI -->
+                    <div class="flex-grow">
+                        <div id="player-info-form" class="mb-4 p-4 bg-gray-50 rounded-lg shadow-inner">
+                            <label for="student-class" class="block text-gray-700 text-sm font-bold mb-2">Анги:</label>
+                            <input type="text" id="student-class" placeholder="Жишээ нь: 5Б" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4">
+                            
+                            <label for="student-group" class="block text-gray-700 text-sm font-bold mb-2">Бүлэг (Нэр/Код):</label>
+                            <input type="text" id="student-group" placeholder="Жишээ нь: Сармагчин баг / B2" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                         </div>
+
+                        <div id="question-display" class="bg-blue-100 p-4 rounded-lg shadow-inner mb-4 hidden">
+                            <p id="question-count-text" class="text-sm text-gray-600 mb-2 text-right"></p>
+                            <p id="question-text" class="text-xl font-medium text-gray-900 mb-3 text-center"></p>
+                            <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <!-- Сонголтууд энд ачаална -->
+                            </div>
+                        </div>
+
+                        <div id="feedback-display" class="p-3 mt-4 rounded-lg text-center font-medium hidden"></div>
+                        <div id="save-status-display" class="p-3 mt-4 rounded-lg text-center font-medium hidden"></div>
                     </div>
 
-                    <div id="feedback-display" class="p-3 mt-4 rounded-lg text-center font-medium hidden"></div>
-                    <div id="save-status-display" class="p-3 mt-4 rounded-lg text-center font-medium hidden"></div>
-
-                    <!-- Шинэ: Ялалтын зураг - Энэ хэсгийг устгасан -->
-                    <!-- <img id="summit-image" src="https://placehold.co/400x300/3498db/ffffff?text=Уулын+оргил+" alt="Уулын оргилд гарлаа" class="hidden mx-auto my-4"> -->
-
-                    <button id="start-button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-300 transform hover:scale-105 w-full mt-6">Тоглоом эхлүүлэх</button>
+                    <!-- Баруун тал: Босоо progress bar болон авирагч -->
+                    <div class="w-full md:w-1/5 flex flex-col items-center justify-end relative h-[300px] bg-gradient-to-t from-gray-700 to-gray-500 rounded-lg shadow-inner overflow-hidden border border-gray-600 p-2">
+                        <div id="vertical-altitude-track" class="w-8 bg-gray-200 rounded-full h-full relative overflow-hidden">
+                            <div id="altitude-bar" class="bg-green-500 w-full rounded-full transition-all duration-500 absolute bottom-0 left-0" style="height: 0%;"></div>
+                        </div>
+                        <div id="climber-dot" class="absolute hidden" style="bottom: 0px; left: 50%; transform: translateX(-50%);"><i class="fas fa-person-hiking text-xl"></i></div>
+                        <p class="text-sm font-semibold text-white mt-2">Одоогийн өндөр: <span id="current-altitude-vertical">0</span>м</p>
+                        <p class="text-sm font-semibold text-white">Оргил: <span id="summit-altitude-vertical">100</span>м</p>
+                    </div>
                 </div>
 
-                <!-- Loading Overlay -->
-                <div id="loading-overlay" class="loading-overlay hidden rounded-xl">
-                    <div class="loading-spinner"></div>
-                    <p class="mt-4 text-gray-700">Ачаалж байна...</p>
-                </div>
+                <button id="start-button" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition duration-300 transform hover:scale-105 w-full mt-6">Тоглоом эхлүүлэх</button>
+            </div>
+
+            <!-- Loading Overlay -->
+            <div id="loading-overlay" class="loading-overlay hidden rounded-xl">
+                <div class="loading-spinner"></div>
+                <p class="mt-4 text-gray-700">Ачаалж байна...</p>
             </div>
         </section>
 
@@ -838,14 +952,12 @@
 
         // New function to handle section visibility
         function showSection(sectionId) {
-            // Get all main content sections
             const allSections = document.querySelectorAll('main > section');
 
             allSections.forEach(section => {
                 if (section.id === sectionId) {
                     section.classList.remove('hidden');
-                    section.scrollIntoView({ behavior: 'smooth', block: 'start' }); // Scroll to the section
-                    // Special handling for game results, load data when its section is shown
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     if (sectionId === 'game-results-section') {
                         loadGameResults();
                     }
@@ -871,7 +983,6 @@
                         console.log("Firebase authenticated. User ID:", currentUserId);
                     } else {
                         console.log("Firebase authentication state changed: No user.");
-                        // Attempt anonymous sign-in if no user is found
                         signInAnonymously(auth).then((userCredential) => {
                             currentUserId = userCredential.user.uid;
                             console.log("Signed in anonymously. User ID:", currentUserId);
@@ -881,14 +992,12 @@
                     }
                 });
 
-                // Use custom token if available (for Canvas environment)
                 if (initialAuthToken) {
                     try {
                         await signInWithCustomToken(auth, initialAuthToken);
                         console.log("Signed in with custom token.");
                     } catch (error) {
                         console.error("Custom token sign-in failed:", error);
-                        // Fallback to anonymous if custom token fails
                         signInAnonymously(auth).then((userCredential) => {
                             currentUserId = userCredential.user.uid;
                             console.log("Signed in anonymously as fallback. User ID:", currentUserId);
@@ -897,7 +1006,6 @@
                         });
                     }
                 } else {
-                     // If no initialAuthToken, try anonymous sign-in
                     signInAnonymously(auth).then((userCredential) => {
                         currentUserId = userCredential.user.uid;
                         console.log("Signed in anonymously. User ID:", currentUserId);
@@ -907,19 +1015,16 @@
                 console.warn("Firebase config not found. Firestore data saving will not work.");
             }
 
-            // Initial state: show the lessons section by default
-            showSection('lessons'); // Make sure the default view is 'lessons'
+            showSection('lessons');
 
-            // Attach event listeners to desktop navigation links
             document.querySelectorAll('header nav.md\\:flex a').forEach(link => {
                 link.addEventListener('click', (event) => {
                     event.preventDefault();
-                    const targetId = link.getAttribute('href').substring(1); // Get section ID from href
+                    const targetId = link.getAttribute('href').substring(1);
                     showSection(targetId);
                 });
             });
 
-            // Mobile menu script (already mostly correct, but will use showSection)
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
 
@@ -930,22 +1035,19 @@
             const mobileMenuItems = mobileMenu.querySelectorAll('a');
             mobileMenuItems.forEach(item => {
                 item.addEventListener('click', (event) => {
-                    event.preventDefault(); // Prevent default anchor behavior
+                    event.preventDefault();
                     mobileMenu.classList.add('hidden');
                     const targetId = item.getAttribute('href').substring(1);
                     showSection(targetId);
                 });
             });
 
-
-            // Даалгавар хураах товчлууруудад event listener нэмэх
             document.querySelectorAll('[id^="submit-assignment-"]').forEach(button => {
                 button.addEventListener('click', (event) => {
                     const lessonId = event.target.id.replace('submit-assignment-', '');
                     handleAssignmentSubmission(lessonId);
                 });
             });
-            // Initial hide of question display and loading overlay.
             questionDisplay.classList.add('hidden');
             hideGameLoading();
         });
@@ -953,33 +1055,32 @@
         // --- Video Lesson Management Script ---
         const videoLessons = {
             'earthquake-lesson': {
-                'Бага анги': 'https://www.youtube.com/embed/EFgomRAPDyM?si=9mFv-Et6WhmsfZKk', // Child safety from earthquake
-                'Дунд анги': 'https://www.youtube.com/embed/PrVOj-1goqs', // Earthquake Preparedness Middle School
-                'Ахлах анги': 'https://www.youtube.com/embed/l4F0VTUcbbE' // Existing example
+                'Бага анги': 'https://www.youtube.com/embed/EFgomRAPDyM?si=9mFv-Et6WhmsfZKk',
+                'Дунд анги': 'https://www.youtube.com/embed/PrVOj-1goqs',
+                'Ахлах анги': 'https://www.youtube.com/embed/l4F0VTUcbbE'
             },
             'flood-lesson': {
-                'Бага анги': 'https://www.youtube.com/embed/trGVxwT9n3k', // Flood safety for kids
-                'Дунд анги': 'https://www.youtube.com/embed/CCpQdz3g_gs', // Flood preparedness middle school
-                'Ахлах анги': 'https://www.youtube.com/embed/oZk37uORL1o' // Existing example
+                'Бага анги': 'https://www.youtube.com/embed/trGVxwT9n3k',
+                'Дунд анги': 'https://www.youtube.com/embed/CCpQdz3g_gs',
+                'Ахлах анги': 'https://www.youtube.com/embed/oZk37uORL1o'
             },
             'fire-lesson': {
-                'Бага анги': 'https://www.youtube.com/embed/eV8VTi_7Ha0', // Fire safety for kids
-                'Дунд анги': 'https://www.youtube.com/embed/UeRIm6nnAgg', // Fire safety middle school
-                'Ахлах анги': 'https://www.youtube.com/embed/WjNKweQLF-E' // Existing example
+                'Бага анги': 'https://www.youtube.com/embed/eV8VTi_7Ha0',
+                'Дунд анги': 'https://www.youtube.com/embed/UeRIm6nnAgg',
+                'Ахлах анги': 'https://www.youtube.com/embed/WjNKweQLF-E'
             },
             'blizzard-lesson': {
-                'Бага анги': 'https://www.youtube.com/embed/xj2SPYpg6o4', // Blizzard safety kids
-                'Дунд анги': 'https://www.youtube.com/embed/Qz7MU9qHKSE', // Blizzard safety middle school
-                'Ахлах анги': 'https://www.youtube.com/embed/Qz7MU9qHKSE' // Existing example
+                'Бага анги': 'https://www.youtube.com/embed/xj2SPYpg6o4',
+                'Дунд анги': 'https://www.youtube.com/embed/Qz7MU9qHKSE',
+                'Ахлах анги': 'https://www.youtube.com/embed/Qz7MU9qHKSE'
             },
             'emergency-kit-lesson': {
-                'Бага анги': 'https://www.youtube.com/embed/pc7xSYAShPs?si=VAWM1xM-CIDL2y8z', // Emergency kit for kids
-                'Дунд анги': 'https://www.youtube.com/embed/pc7xSYAShPs?si=VAWM1xM-CIDL2y8z', // Emergency kit middle school
-                'Ахлах анги': 'https://www.youtube.com/embed/pc7xSYAShPs' // Existing example
+                'Бага анги': 'https://www.youtube.com/embed/pc7xSYAShPs?si=VAWM1xM-CIDL2y8z',
+                'Дунд анги': 'https://www.youtube.com/embed/pc7xSYAShPs?si=VAWM1xM-CIDL2y8z',
+                'Ахлах анги': 'https://www.youtube.com/embed/pc7xSYAShPs'
             }
         };
 
-        // Дасгал даалгаврын асуултууд
         const lessonAssignmentQuestions = {
             'earthquake-lesson': {
                 'Бага анги': [
@@ -1053,12 +1154,11 @@
             }
         };
 
-        let currentActiveGrade = 'Ахлах анги'; // Default to Akhlah angi
+        let currentActiveGrade = 'Ахлах анги';
 
         function updateLessonContent(grade) {
             currentActiveGrade = grade;
 
-            // Update button active state
             document.querySelectorAll('[data-grade]').forEach(button => {
                 if (button.dataset.grade === grade) {
                     button.classList.remove('bg-white', 'hover:bg-gray-100');
@@ -1069,21 +1169,18 @@
                 }
             });
 
-            // Update videos and assignments for each lesson
             document.querySelectorAll('.lesson-card').forEach(lessonCard => {
                 const lessonId = lessonCard.id;
                 
-                // Update Video
                 const videoContainer = lessonCard.querySelector('.video-responsive');
                 const iframe = videoContainer ? videoContainer.querySelector('iframe') : null;
                 if (iframe && videoLessons[lessonId] && videoLessons[lessonId][grade]) {
                     iframe.src = videoLessons[lessonId][grade];
                 }
 
-                // Update Assignments
                 const assignmentQuestionsDiv = lessonCard.querySelector(`[id^="assignment-questions-"]`);
                 if (assignmentQuestionsDiv && lessonAssignmentQuestions[lessonId] && lessonAssignmentQuestions[lessonId][grade]) {
-                    assignmentQuestionsDiv.innerHTML = ''; // Clear previous questions
+                    assignmentQuestionsDiv.innerHTML = '';
                     lessonAssignmentQuestions[lessonId][grade].forEach(questionText => {
                         const questionWrapper = document.createElement('div');
                         questionWrapper.classList.add('flex', 'items-start');
@@ -1105,7 +1202,6 @@
                     });
                 }
 
-                // Hide/show assignment upload section based on grade
                 const uploadSection = lessonCard.querySelector('.assignment-upload-section');
                 if (uploadSection) {
                     if (grade === 'Бага анги') {
@@ -1117,19 +1213,16 @@
             });
         }
 
-        // Add event listeners to grade buttons
         document.getElementById('grade-btn-baga').addEventListener('click', () => updateLessonContent('Бага анги'));
         document.getElementById('grade-btn-dund').addEventListener('click', () => updateLessonContent('Дунд анги'));
         document.getElementById('grade-btn-ahlah').addEventListener('click', () => updateLessonContent('Ахлах анги'));
 
-        // Initial load of content based on default grade
         document.addEventListener('DOMContentLoaded', () => {
             updateLessonContent(currentActiveGrade);
         });
 
 
         // --- Mountain Climb Game JavaScript Script ---
-        // Enhanced list of questions to ensure variety for 10 questions
         const allGameQuestions = [
             {
                 "question": "Газар хөдлөлтийн үед юу хийх ёстой вэ?",
@@ -1186,7 +1279,7 @@
                 "answer": "Б",
                 "explanation": "Гамшгийн үед ус, эм тариа, анхны тусламжийн хэрэгсэл зэрэг амьдралд зайлшгүй шаардлагатай зүйлсийг бэлэн байлгах нь чухал."
             },
-            {
+             {
                 "question": "Хүчтэй салхи шуурганы үед гэртээ байвал ямар арга хэмжээ авах вэ?",
                 "options": {
                     "А": "Цонхны ойролцоо зогсож гаднаа юу болж байгааг харах",
@@ -1262,27 +1355,172 @@
                 },
                 "answer": "В",
                 "explanation": "Үерийн дараа ус бохирдож, өвчин үүсгэгч нян тархах эрсдэл өндөр байдаг тул хувийн ариун цэврийг сахиж, аюулгүй ус хэрэглэх нь чухал."
+            },
+            {
+                "question": "Гал түймрийн үед утаанаас хэрхэн хамгаалах вэ?",
+                "options": {
+                    "А": "Босоо зогсох",
+                    "Б": "Газраар мөлхөх",
+                    "В": "Гүнзгий амьсгалах",
+                    "Г": "Цонх онгойлгох"
+                },
+                "answer": "Б",
+                "explanation": "Гал түймрийн үед утаа дээшээ өгсдөг тул газарт ойр мөлхөх нь агаар амьсгалах боломжийг нэмэгдүүлнэ."
+            },
+            {
+                "question": "Гамшгийн үед гэр бүлийн цугларах цэг яагаад чухал вэ?",
+                "options": {
+                    "А": "Зөвхөн зугаацах зорилгоор",
+                    "Б": "Гэр бүлийн гишүүд аюулгүйгээр цугларах газар",
+                    "В": "Хоол идэх газар",
+                    "Г": "Видео тоглоом тоглох газар"
+                },
+                "answer": "Б",
+                "explanation": "Гамшгийн үед гэр бүлийн гишүүд бие биенээ олох, аюулгүйгээр цугларах зорилгоор урьдчилан тогтсон цугларах цэгтэй байх нь чухал."
+            },
+            {
+                "question": "Яаралтай тусламжийн 103 дугаар аль үйлчилгээнийх вэ?",
+                "options": {
+                    "А": "Цагдаа",
+                    "Б": "Гал түймэр",
+                    "В": "Түргэн тусламж",
+                    "Г": "Онцгой байдал"
+                },
+                "answer": "В",
+                "explanation": "103 нь түргэн тусламжийн дугаар юм."
+            },
+            {
+                "question": "Хүйтэн жавар ихтэй үед биеийн аль хэсгүүд хамгийн түрүүнд хөлддөг вэ?",
+                "options": {
+                    "А": "Хөл, гар",
+                    "Б": "Хүзүү, цээж",
+                    "В": "Чих, хамар, хуруу, хөлний хуруу",
+                    "Г": "Нуруу, мөр"
+                },
+                "answer": "В",
+                "explanation": "Хүйтэн жаварт хамгийн их өртдөг, хөлддөг хэсгүүд бол чих, хамар, хуруу, хөлний хуруу зэрэг захын хэсгүүд юм."
+            },
+            {
+                "question": "Гамшгийн үед мэдээлэл авахад хамгийн найдвартай эх сурвалж юу вэ?",
+                "options": {
+                    "А": "Сошиал медиагийн цуу яриа",
+                    "Б": "Найзуудын яриа",
+                    "В": "Албан ёсны мэдээллийн сувгууд (радио, телевиз, Онцгой байдлын байгууллага)",
+                    "Г": "Интернет дэх санамсаргүй мэдээлэл"
+                },
+                "answer": "В",
+                "explanation": "Гамшгийн үед албан ёсны эх сурвалжуудаас мэдээлэл авах нь хамгийн найдвартай бөгөөд зөв шийдвэр гаргахад тустай."
+            },
+            {
+                "question": "Усны нөөцгүй үед үерээс хэрхэн аюулгүй ус авах вэ?",
+                "options": {
+                    "А": "Бохирдсон усыг шууд уух",
+                    "Б": "Усыг буцалгаж, цэвэрлэсний дараа уух",
+                    "В": "Үерийн усаар шүдээ угаах",
+                    "Г": "Ямар ч ус уухгүй байх"
+                },
+                "answer": "Б",
+                "explanation": "Үерийн дараа ус бохирдох эрсдэлтэй байдаг тул заавал буцалгаж эсвэл цэвэрлэгээний арга хэмжээ авсны дараа хэрэглэх ёстой."
+            },
+            {
+                "question": "Гал түймрийн аюулаас урьдчилан сэргийлэхэд цахилгааны аюулгүй байдал яагаад чухал вэ?",
+                "options": {
+                    "А": "Цахилгаан бага зарцуулахын тулд",
+                    "Б": "Цахилгааны гэмтлээс үүдэлтэй гал түймрийг багасгахын тулд",
+                    "В": "Утасгүй интернэттэй байхын тулд",
+                    "Г": "Гэрлээ тод байлгахын тулд"
+                },
+                "answer": "Б",
+                "explanation": "Цахилгааны гэмтэл, хэт ачаалал нь гал түймэр гарах нийтлэг шалтгаануудын нэг тул цахилгааны аюулгүй байдлыг хангах нь чухал."
+            },
+            {
+                "question": "Гамшгийн үед гэртээ гацсан үед хоол хүнсний нөөц яагаад хэрэгтэй вэ?",
+                "options": {
+                    "А": "Зөвхөн амттай хоол идэхийн тулд",
+                    "Б": "Дэлгүүр хаагдсан үед өлсгөлөнгөөс сэргийлэхийн тулд",
+                    "В": "Зөвхөн найз нөхдөө дайлахын тулд",
+                    "Г": "Биеийн жингээ нэмэхийн тулд"
+                },
+                "answer": "Б",
+                "explanation": "Гамшгийн үед дэлгүүр, зах хаагдах, тээврийн хэрэгсэл хөдлөхгүй болох зэрэг хүндрэлүүд үүсдэг тул хоол хүнсний нөөцтэй байх нь зайлшгүй шаардлагатай."
+            },
+            {
+                "question": "Хүүхдүүд гамшгийн үед айдастай байвал хэрхэн туслах вэ?",
+                "options": {
+                    "А": "Тэднийг үл тоомсорлох",
+                    "Б": "Тэдэнтэй ярилцаж, тайвшруулах, аюулгүй байдлыг нь мэдрүүлэх",
+                    "В": "Тэднийг ганцааранг нь орхих",
+                    "Г": "Тэдэнд видео тоглоом өгөх"
+                },
+                "answer": "Б",
+                "explanation": "Гамшгийн үед хүүхдүүд айж, түгших нь элбэг байдаг тул тэдэнтэй ярилцаж, сэтгэл санааны дэмжлэг үзүүлэх нь маш чухал."
+            },
+            {
+                "question": "Гамшгийн үед холбоо барих төлөвлөгөө яагаад хэрэгтэй вэ?",
+                "options": {
+                    "А": "Зөвхөн хөгжилдөх зорилгоор",
+                    "Б": "Гэр бүлийн гишүүд хоорондоо холбоо тогтооход хялбар болгохын тулд",
+                    "В": "Хөршүүдтэйгээ ярихын тулд",
+                    "Г": "Утасны батерейгаа шалгахын тулд"
+                },
+                "answer": "Б",
+                "explanation": "Гамшгийн үед холбоо тасрах, үүрэн холбоо ажиллахгүй болох тохиолдол гардаг тул гэр бүлийн гишүүд хэрхэн холбоо барих талаар урьдчилан төлөвлөгөөтэй байх нь чухал."
+            },
+            {
+                "question": "Гамшгийн цүнхээ хэр их хугацаанд нэг удаа шалгах ёстой вэ?",
+                "options": {
+                    "А": "1 жил тутамд",
+                    "Б": "5 жил тутамд",
+                    "В": "10 жил тутамд",
+                    "Г": "Хэзээ ч шалгахгүй байх"
+                },
+                "answer": "А",
+                "explanation": "Яаралтай тусламжийн цүнхний агуулгыг жил бүр шалгаж, хугацаа нь дууссан хүнс, эм тариаг шинэчлэх нь зүйтэй."
+            },
+            {
+                "question": "Гэр орондоо гал унтраагчтай байхын ач холбогдол юу вэ?",
+                "options": {
+                    "А": "Зөвхөн гоёл чимэглэл",
+                    "Б": "Гал гарах үед түргэн шуурхай унтраах боломжийг олгоно",
+                    "В": "Хаалга нээхэд туслана",
+                    "Г": "Гэрэл асаахад хэрэглэнэ"
+                },
+                "answer": "Б",
+                "explanation": "Жижиг хэмжээний гал түймрийг эхэн үед нь унтраахын тулд гал унтраагч байх нь маш чухал."
+            },
+            {
+                "question": "Цасан шуурганы үед хүн яагаад гадаа удаан байх ёсгүй вэ?",
+                "options": {
+                    "А": "Хөгжилтэй биш",
+                    "Б": "Хөлдөх эрсдэлтэй",
+                    "В": "Цас идэхээс сэргийлэхийн тулд",
+                    "Г": "Зөвхөн гэртээ л дасгал хийх ёстой"
+                },
+                "answer": "Б",
+                "explanation": "Цасан шуурга, хүйтэн жавар нь хүнийг хөлдөөх аюултай тул гадаа удаан байхгүй байх нь чухал."
             }
         ];
 
         // Тоглоомын тохиргоо
         const SUMMIT_ALTITUDE = 100;
-        const ALTITUDE_GAIN_PER_CORRECT_ANSWER = 10; // 1 асуултад 10м ахина
-        const ALTITUDE_PENALTY_PER_INCORRECT_ANSWER = 5; // Буруу хариулбал 5м буцаж унана
-        const QUESTIONS_TO_ASK = 10; // Нийт 10 асуулт асууна
+        const ALTITUDE_GAIN_PER_CORRECT_ANSWER = 10;
+        const ALTITUDE_PENALTY_PER_INCORRECT_ANSWER = 5;
+        const QUESTIONS_TO_ASK = 10;
 
         let currentAltitude = 0;
         let questionsAnsweredCount = 0;
-        let gameQuestions = []; // Тоглоом эхлэх үед сонгогдсон асуултууд
+        let gameQuestions = [];
         let gameClass = '';
         let gameGroup = '';
 
         // DOM элементүүд (Тоглоомын хэсэг доторх элементүүд)
-        const currentAltitudeSpan = document.getElementById('current-altitude');
-        const summitAltitudeSpan = document.getElementById('summit-altitude');
-        const altitudeBar = document.getElementById('altitude-bar');
+        // Шинэчилсэн ID-ууд
+        const currentAltitudeSpanVertical = document.getElementById('current-altitude-vertical');
+        const summitAltitudeSpanVertical = document.getElementById('summit-altitude-vertical');
+        const altitudeBar = document.getElementById('altitude-bar'); // Now represents the vertical bar
+        const verticalAltitudeTrack = document.getElementById('vertical-altitude-track'); // New element
         const questionDisplay = document.getElementById('question-display');
-        const questionCountText = document.getElementById('question-count-text'); // Асуултын дугаар
+        const questionCountText = document.getElementById('question-count-text');
         const questionText = document.getElementById('question-text');
         const optionsContainer = document.getElementById('options-container');
         const feedbackDisplay = document.getElementById('feedback-display');
@@ -1292,15 +1530,16 @@
         const studentClassInput = document.getElementById('student-class');
         const studentGroupInput = document.getElementById('student-group');
         const saveStatusDisplay = document.getElementById('save-status-display');
-        // const summitImage = document.getElementById('summit-image'); // Устгасан зурганд хандах хэсгийг устгасан
+        
+        const climberDot = document.getElementById('climber-dot');
+        const gameAreaContainerElement = document.getElementById('game-area-container');
 
 
         // Эхний тохиргоо
-        summitAltitudeSpan.textContent = SUMMIT_ALTITUDE;
+        summitAltitudeSpanVertical.textContent = SUMMIT_ALTITUDE;
         
         // --- Game Logic Functions ---
 
-        // Start the game
         async function startGame() {
             gameClass = studentClassInput.value.trim();
             gameGroup = studentGroupInput.value.trim();
@@ -1308,21 +1547,23 @@
             if (!gameClass || !gameGroup) {
                 saveStatusDisplay.classList.remove('hidden', 'bg-green-100', 'text-green-800');
                 saveStatusDisplay.classList.add('bg-red-100', 'text-red-800');
-                saveStatusDisplay.textContent = "Тоглоом эхлүүлэхийн тулд анги болон бүлгийн мэдээллээ оруулна уу!";
+                saveStatusDisplay.textContent = "Тоглоом эхлүүлэхийн тулд **анги** болон **бүлгийн мэдээллээ** оруулна уу!";
                 return;
             }
+            
+            saveStatusDisplay.classList.add('hidden');
 
             showGameLoading();
             startButton.classList.add('hidden');
             playerInfoForm.classList.add('hidden');
             questionDisplay.classList.remove('hidden');
-            saveStatusDisplay.classList.add('hidden');
-            // summitImage.classList.add('hidden'); // Устгасан зурганд хандах хэсгийг устгасан
+            
+            climberDot.classList.remove('hidden');
+            climberDot.style.bottom = '0px'; // Initial position for the climber
 
             currentAltitude = 0;
             questionsAnsweredCount = 0;
             
-            // Асуултуудыг санамсаргүй байдлаар хольж, эхний 10-г сонгох
             const shuffledQuestions = [...allGameQuestions].sort(() => 0.5 - Math.random());
             gameQuestions = shuffledQuestions.slice(0, QUESTIONS_TO_ASK);
 
@@ -1330,7 +1571,7 @@
             setTimeout(() => {
                 hideGameLoading();
                 displayQuestion();
-            }, 500); // Богино ачааллын хугацаа
+            }, 500);
         }
 
         async function endGame() {
@@ -1339,37 +1580,34 @@
             let messageClass = "";
             let isWin = false;
 
-            // 10 асуултад хариулсны дараа өндөрөөр нь үнэлэх
             if (currentAltitude >= SUMMIT_ALTITUDE) {
                 message = "Баяр хүргэе! Та уулын оргилд амжилттай гарч чадлаа!";
                 messageClass = "bg-green-200 text-green-900";
                 isWin = true;
-                // summitImage.classList.remove('hidden'); // Устгасан зурганд хандах хэсгийг устгасан
             } else {
-                message = `Уучлаарай, дахин судлана уу. Та ${currentAltitude}м өндөрт хүрсэн байна.`; // Changed message
+                message = `Уучлаарай, дахин судлана уу. Та ${currentAltitude}м өндөрт хүрсэн байна.`;
                 messageClass = "bg-red-200 text-red-900";
                 isWin = false;
-                // summitImage.classList.add('hidden'); // Устгасан зурганд хандах хэсгийг устгасан
             }
             
             questionText.textContent = message;
-            questionText.classList.add(...messageClass.split(' ')); // Fix: Use spread operator for multiple classes
+            questionText.classList.add(...messageClass.split(' '));
             questionText.classList.remove('mb-3');
 
-            optionsContainer.innerHTML = ''; // Сонголтуудыг цэвэрлэх
+            optionsContainer.innerHTML = '';
             feedbackDisplay.classList.add('hidden');
 
             startButton.textContent = "Дахин тоглох";
             startButton.classList.remove('hidden');
             playerInfoForm.classList.remove('hidden');
 
+            climberDot.classList.add('hidden');
+
             hideGameLoading();
 
-            // Save game result to Firestore
             await saveGameResult(isWin, currentAltitude, gameClass, gameGroup);
         }
 
-        // Functions used by startGame and endGame
         function showGameLoading() {
             gameLoadingOverlay.classList.remove('hidden');
         }
@@ -1379,9 +1617,14 @@
         }
 
         function updateDisplay() {
-            currentAltitudeSpan.textContent = currentAltitude;
+            // Update vertical altitude display
+            currentAltitudeSpanVertical.textContent = currentAltitude;
+            
             const progress = (currentAltitude / SUMMIT_ALTITUDE) * 100;
-            altitudeBar.style.width = `${progress}%`;
+            
+            // Update vertical altitude bar height
+            altitudeBar.style.height = `${progress}%`;
+            
             if (currentAltitude >= SUMMIT_ALTITUDE * 0.7) {
                 altitudeBar.classList.remove('bg-yellow-500', 'bg-red-500');
                 altitudeBar.classList.add('bg-green-500');
@@ -1392,6 +1635,13 @@
                 altitudeBar.classList.remove('bg-green-500', 'bg-yellow-500');
                 altitudeBar.classList.add('bg-red-500');
             }
+
+            // Update climber dot position relative to the vertical track
+            const trackHeight = verticalAltitudeTrack.clientHeight;
+            const climberHeight = climberDot.clientHeight;
+            // Calculate bottom position: 0% at bottom, 100% at top (adjusted for climber's height)
+            const newBottomPx = (currentAltitude / SUMMIT_ALTITUDE) * (trackHeight - climberHeight);
+            climberDot.style.bottom = `${newBottomPx}px`;
         }
 
         function displayQuestion() {
@@ -1400,8 +1650,7 @@
                 return;
             }
 
-            // GameQuestions-аас асуулт авах (энд аль хэдийнэ 10 асуулт сонгогдсон байгаа)
-            const currentQuestion = gameQuestions[questionsAnsweredCount]; 
+            const currentQuestion = gameQuestions[questionsAnsweredCount];
             
             questionCountText.textContent = `Асуулт: ${questionsAnsweredCount + 1} / ${QUESTIONS_TO_ASK}`;
             questionText.textContent = currentQuestion.question;
@@ -1415,14 +1664,13 @@
                 optionsContainer.appendChild(button);
             }
             feedbackDisplay.classList.add('hidden');
-            // summitImage.classList.add('hidden'); // Устгасан зурганд хандах хэсгийг устгасан
         }
 
         async function checkAnswer(userAnswer, correctAnswer, explanation) {
             showGameLoading();
             Array.from(optionsContainer.children).forEach(btn => btn.disabled = true);
 
-            questionsAnsweredCount++; // Асуултад хариулсан тоог нэмэгдүүлэх
+            questionsAnsweredCount++;
 
             if (userAnswer === correctAnswer) {
                 currentAltitude += ALTITUDE_GAIN_PER_CORRECT_ANSWER;
@@ -1442,14 +1690,14 @@
             updateDisplay();
 
             setTimeout(() => {
-                if (questionsAnsweredCount >= QUESTIONS_TO_ASK) { // 10 асуултад хариулсан эсэхийг шалгах
+                if (questionsAnsweredCount >= QUESTIONS_TO_ASK) {
                     endGame();
                 } else {
                     hideGameLoading();
                     displayQuestion();
                     Array.from(optionsContainer.children).forEach(btn => btn.disabled = false);
                 }
-            }, 2000); // 2 секунд хүлээх
+            }, 2000);
         }
 
         async function saveGameResult(isWin, finalAltitude, studentClass, studentGroup) {
@@ -1478,8 +1726,8 @@
                 saveStatusDisplay.classList.remove('bg-blue-100', 'text-blue-800');
                 saveStatusDisplay.classList.add('bg-green-100', 'text-green-800');
                 saveStatusDisplay.textContent = "Таны үр дүн амжилттай хадгалагдлаа!";
-                studentClassInput.value = ''; // Input-г цэвэрлэх
-                studentGroupInput.value = ''; // Input-г цэвэрлэх
+                studentClassInput.value = '';
+                studentGroupInput.value = '';
             } catch (e) {
                 console.error("Error adding document: ", e);
                 saveStatusDisplay.classList.remove('bg-blue-100', 'text-blue-800');
@@ -1487,14 +1735,14 @@
                 saveStatusDisplay.textContent = "Үр дүнг хадгалахад алдаа гарлаа. Дахин оролдоно уу.";
             } finally {
                 setTimeout(() => {
-                    saveStatusDisplay.classList.add('hidden'); // 3 секундын дараа статусыг нуух
+                    saveStatusDisplay.classList.add('hidden');
                 }, 3000);
             }
         }
 
         function clearGameDisplay() {
             questionText.classList.remove('bg-green-200', 'text-green-900', 'bg-red-200', 'text-red-900');
-            questionCountText.textContent = ""; // Асуултын тоог цэвэрлэх
+            questionCountText.textContent = "";
         }
 
         // --- Event Listeners ---
@@ -1506,12 +1754,7 @@
         const sendButton = document.getElementById('send-button');
         const chatbotLoadingIndicator = document.getElementById('chatbot-loading-indicator');
 
-        // Энд та өөрийн Gemini API түлхүүрээ оруулна уу.
-        // Хэрэв та энэ кодыг Canvas орчинд ажиллуулж байгаа бол доорх мөрийг хэвээр үлдээж болно.
-        // Харин та өөрийн компьютер дээрээ эсвэл бусад веб хостинг дээр ажиллуулж байгаа бол
-        // Google AI Studio-с авсан API түлхүүрээ "YOUR_GEMINI_API_KEY_HERE" гэсэн хэсэгт оруулна уу.
-        // Энэ нь аюулгүй байдлын үүднээс үйлдвэрлэлийн орчинд зөвлөгддөггүй болохыг анхаарна уу.
-        const API_KEY = "AIzaSyC47JGMbEnlubYvjWG51i2q9E19yy36qwQ"; // Таны API түлхүүр энд байна. Canvas орчинд автоматаар хангагдана.
+        const API_KEY = "";
         const MODEL_NAME = "gemini-2.5-flash-preview-05-20";
 
         async function fetchGeminiResponse(prompt, retries = 3, delay = 1000) {
@@ -1529,9 +1772,9 @@
                     });
 
                     if (!response.ok) {
-                        if (response.status === 429 && i < retries - 1) { // Too Many Requests
+                        if (response.status === 429 && i < retries - 1) {
                             await new Promise(res => setTimeout(res, delay));
-                            delay *= 2; // Exponential backoff
+                            delay *= 2;
                             continue;
                         }
                         throw new Error(`API request failed with status ${response.status}`);
@@ -1547,7 +1790,7 @@
                     }
                 } catch (error) {
                     console.error("Error fetching from Gemini API:", error);
-                    if (i === retries - 1) throw error; // Re-throw after last retry
+                    if (i === retries - 1) throw error;
                 }
             }
             return "Уучлаарай, хариулт өгөхөд алдаа гарлаа. Дахин оролдоно уу.";
@@ -1563,7 +1806,7 @@
             }
             messageDiv.textContent = text;
             chatHistoryDiv.appendChild(messageDiv);
-            chatHistoryDiv.scrollTop = chatHistoryDiv.scrollHeight; // Хамгийн доод тал руу гүйлгэх
+            chatHistoryDiv.scrollTop = chatHistoryDiv.scrollHeight;
         }
 
         async function sendMessage() {
@@ -1601,11 +1844,10 @@
             chatbotLoadingIndicator.classList.add('hidden');
             sendButton.disabled = false;
             userInput.disabled = false;
-            userInput.focus(); // Input-т курсорыг буцаах
+            userInput.focus();
         }
 
         // --- New: Assignment Submission with Firebase Storage ---
-        // handleAssignmentSubmission функц шинэчилсэн
         async function handleAssignmentSubmission(lessonId) {
             const fileInput = document.getElementById(`assignment-file-${lessonId}`);
             const submissionStatusDiv = document.getElementById(`submission-status-${lessonId}`);
@@ -1628,7 +1870,6 @@
             const file = fileInput.files[0];
             const fileName = file.name;
             const timestamp = new Date().toISOString();
-            // Файлыг хадгалах зам (path)
             const storagePath = `assignments/${appId}/${currentUserId}/${lessonId}/${timestamp}_${fileName}`;
             const storageRef = ref(storage, storagePath);
             const uploadTask = uploadBytesResumable(storageRef, file);
@@ -1653,21 +1894,20 @@
                         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
                         console.log('Файл амжилттай илгээгдлээ, URL:', downloadURL);
 
-                        // Файлын URL болон бусад мэдээллийг Firestore-д хадгалах
                         await addDoc(collection(db, `artifacts/${appId}/public/data/assignments`), {
                             userId: currentUserId,
                             lessonId: lessonId,
                             fileName: fileName,
                             fileURL: downloadURL,
                             timestamp: new Date(),
-                            class: document.getElementById('student-class').value || 'N/A', // Тоглоомын анги, бүлэг эсвэл N/A
+                            class: document.getElementById('student-class').value || 'N/A',
                             group: document.getElementById('student-group').value || 'N/A'
                         });
 
                         submissionStatusDiv.classList.remove('text-blue-800');
                         submissionStatusDiv.classList.add('text-green-800');
                         submissionStatusDiv.textContent = `Даалгавар ${file.name} амжилттай хураагдлаа! Багш таны файлыг удахгүй шалгана.`;
-                        fileInput.value = ''; // Файл сонголтыг цэвэрлэх
+                        fileInput.value = '';
                     } catch (error) {
                         console.error("Файлын URL-г хадгалахад эсвэл даалгаврын мэдээлэл нэмэхэд алдаа гарлаа:", error);
                         submissionStatusDiv.classList.remove('text-blue-800');
@@ -1676,7 +1916,7 @@
                     } finally {
                         setTimeout(() => {
                             submissionStatusDiv.classList.add('hidden');
-                        }, 5000); // 5 секундын дараа статусыг нуух
+                        }, 5000);
                     }
                 }
             );
@@ -1687,7 +1927,6 @@
         const ttsLoadingIndicator = document.getElementById('tts-loading-indicator');
         const aboutTextElement = document.getElementById('about-text');
 
-        // Helper function to convert base64 to ArrayBuffer
         function base64ToArrayBuffer(base64) {
             const binaryString = atob(base64);
             const len = binaryString.length;
@@ -1698,32 +1937,28 @@
             return bytes.buffer;
         }
 
-        // Helper function to convert PCM to WAV Blob
         function pcmToWav(pcmData, sampleRate) {
-            const numChannels = 1; // Mono
-            const bytesPerSample = 2; // Int16
+            const numChannels = 1;
+            const bytesPerSample = 2;
 
             const wavHeader = new ArrayBuffer(44);
             const view = new DataView(wavHeader);
 
-            // RIFF chunk
             writeString(view, 0, 'RIFF');
-            view.setUint32(4, 36 + pcmData.byteLength, true); // ChunkSize
+            view.setUint32(4, 36 + pcmData.byteLength, true);
             writeString(view, 8, 'WAVE');
 
-            // fmt chunk
             writeString(view, 12, 'fmt ');
-            view.setUint32(16, 16, true); // Subchunk1Size
-            view.setUint16(20, 1, true); // AudioFormat (1 = PCM)
-            view.setUint16(22, numChannels, true); // NumChannels
-            view.setUint32(24, sampleRate, true); // SampleRate
-            view.setUint32(28, sampleRate * numChannels * bytesPerSample, true); // ByteRate
-            view.setUint16(32, numChannels * bytesPerSample, true); // BlockAlign
-            view.setUint16(34, 8 * bytesPerSample, true); // BitsPerSample (16-bit)
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, numChannels, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * numChannels * bytesPerSample, true);
+            view.setUint16(32, numChannels * bytesPerSample, true);
+            view.setUint16(34, 8 * bytesPerSample, true);
 
-            // data chunk
             writeString(view, 36, 'data');
-            view.setUint32(40, pcmData.byteLength, true); // Subchunk2Size
+            view.setUint32(40, pcmData.byteLength, true);
 
             const blob = new Blob([wavHeader, pcmData], { type: 'audio/wav' });
             return blob;
@@ -1753,14 +1988,14 @@
                     responseModalities: ["AUDIO"],
                     speechConfig: {
                         voiceConfig: {
-                            prebuiltVoiceConfig: { voiceName: "Puck" } // Changed to Puck for a more youthful/upbeat voice
+                            prebuiltVoiceConfig: { voiceName: "Puck" }
                         }
                     }
                 },
                 model: "gemini-2.5-flash-preview-tts"
             };
 
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${API_KEY}`; // API_KEY-г энд ашиглана
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${API_KEY}`;
 
             try {
                 const response = await fetch(apiUrl, {
@@ -1778,12 +2013,12 @@
                 const audioData = part?.inlineData?.data;
                 const mimeType = part?.inlineData?.mimeType;
 
-                if (audioData && mimeType && mimeType.startsWith("audio/L16")) { // raw PCM 16-bit
+                if (audioData && mimeType && mimeType.startsWith("audio/L16")) {
                     const sampleRateMatch = mimeType.match(/rate=(\d+)/);
-                    const sampleRate = sampleRateMatch ? parseInt(sampleRateMatch[1], 10) : 16000; // Default to 16kHz if not found
+                    const sampleRate = sampleRateMatch ? parseInt(sampleRateMatch[1], 10) : 16000;
                     
                     const pcmArrayBuffer = base64ToArrayBuffer(audioData);
-                    const pcm16 = new Int16Array(pcmArrayBuffer); // API returns signed PCM16 audio data.
+                    const pcm16 = new Int16Array(pcmArrayBuffer);
 
                     const wavBlob = pcmToWav(pcm16, sampleRate);
                     const audioUrl = URL.createObjectURL(wavBlob);
@@ -1791,21 +2026,21 @@
                     audio.play();
 
                     audio.onended = () => {
-                        URL.revokeObjectURL(audioUrl); // Clean up the object URL after playing
+                        URL.revokeObjectURL(audioUrl);
                         ttsLoadingIndicator.classList.add('hidden');
                         playAboutTextButton.disabled = false;
                     };
 
                 } else {
                     console.error("Unexpected audio data format or missing content:", result);
-                    alert("Уучлаарай, дууг үүсгэхэд асуудал гарлаа."); // Using alert only for error display
+                    alert("Уучлаарай, дууг үүсгэхэд асуудал гарлаа.");
                 }
 
             } catch (error) {
                 console.error("Error playing TTS:", error);
-                alert("Уучлаарай, дууг үүсгэхэд алдаа гарлаа: " + error.message); // Using alert only for error display
+                alert("Уучлаарай, дууг үүсгэхэд алдаа гарлаа: " + error.message);
             } finally {
-                if (!playAboutTextButton.disabled) { // Only hide if not already hidden by audio.onended
+                if (!playAboutTextButton.disabled) {
                     ttsLoadingIndicator.classList.add('hidden');
                     playAboutTextButton.disabled = false;
                 }
@@ -1832,13 +2067,12 @@
                 return;
             }
 
-            gameResultsBody.innerHTML = ''; // Clear previous results
+            gameResultsBody.innerHTML = '';
             gameResultsLoadingIndicator.classList.remove('hidden');
             gameResultsErrorMessage.classList.add('hidden');
 
             try {
-                // Fetch all documents from the 'game_scores' collection for this appId
-                const q = query(collection(db, `artifacts/${appId}/public/data/game_scores`)); // OrderBy is removed to avoid index issues. Data will be sorted in JS.
+                const q = query(collection(db, `artifacts/${appId}/public/data/game_scores`));
                 const querySnapshot = await getDocs(q);
 
                 let totalScore = 0;
@@ -1854,15 +2088,12 @@
                     }
                 });
 
-                // Sort games by timestamp descending
                 games.sort((a, b) => b.timestamp.toDate().getTime() - a.timestamp.toDate().getTime());
 
-                // Update summary statistics
                 totalGamesPlayedSpan.textContent = games.length;
                 averageScoreSpan.textContent = games.length > 0 ? (totalScore / games.length).toFixed(2) : '0';
                 highestScoreSpan.textContent = highestScore;
 
-                // Populate the table
                 if (games.length === 0) {
                     gameResultsBody.innerHTML = `<tr><td colspan="6" class="px-6 py-4 whitespace-nowrap text-center text-gray-500">Одоогоор тоглоомын үр дүн байхгүй байна. Тоглож эхний үр дүнгээ бүртгүүлээрэй!</td></tr>`;
                 } else {
@@ -1872,7 +2103,7 @@
                         
                         const userIdCell = row.insertCell();
                         userIdCell.classList.add('px-6', 'py-4', 'whitespace-nowrap', 'text-sm', 'font-medium', 'text-gray-900');
-                        userIdCell.textContent = data.userId ? data.userId.substring(0, 8) + '...' : 'Unknown'; // Show truncated User ID
+                        userIdCell.textContent = data.userId ? data.userId.substring(0, 8) + '...' : 'Unknown';
 
                         const classCell = row.insertCell();
                         classCell.classList.add('px-6', 'py-4', 'whitespace-nowrap', 'text-sm', 'text-gray-500');
